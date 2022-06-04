@@ -101,19 +101,8 @@ Fourier Series Report
 
 \end_layout
 
-\begin_layout Standard
-
-\series bold
-I.
- Fourier Signals
-\end_layout
-
-\begin_layout Standard
-We define four signals for our use case
-\end_layout
-
 \begin_layout Section
-Fourier Signals
+Signals Definition
 \end_layout
 
 \begin_layout Standard
@@ -124,12 +113,48 @@ We define the following signals as such
 Box Signal
 \end_layout
 
+\begin_layout Subsubsection
+Definition
+\end_layout
+
 \begin_layout Standard
 \begin_inset Formula 
 \[
 f(x)=\left\{ \begin{array}{cc}
 b & -a\leq x\leq a\\
 0 & otherwise
+\end{array}\right\} 
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $a:[\frac{\pi}{4},\frac{\pi}{2}]$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $b:[-1,0)U(0,1]$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection*
+1.1.2 Fourier Coefficients(analytical solution)
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+f(x)=\left\{ \begin{array}{cc}
+2ab & k=0\\
+\frac{2b*sin(ak)}{k} & k\neq0
 \end{array}\right\} 
 \]
 
@@ -146,8 +171,40 @@ Saw Signal
 \begin_inset Formula 
 \[
 f(x)=\left\{ \begin{array}{cc}
-b & -a\leq x\leq a\\
+bx & -a\leq x\leq a\\
 0 & otherwise
+\end{array}\right\} 
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $a:[\frac{\pi}{4},\frac{\pi}{2}]$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $b:[-1,0)U(0,1]$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection*
+1.1.2 Fourier Coefficients(analytical solution)
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+f(x)=\left\{ \begin{array}{cc}
+0 & k=0\\
+\frac{2ib*(sin(ak)-ak*cos(ak)))}{k^{2}} & k\neq0
 \end{array}\right\} 
 \]
 
@@ -164,11 +221,32 @@ Exponential Signal
 \begin_inset Formula 
 \[
 f(x)=\left\{ \begin{array}{cc}
-b & -a\leq x\leq a\\
+c+e^{-bx} & -a\leq x\leq a\\
 0 & otherwise
 \end{array}\right\} 
 \]
 
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $a:[\frac{\pi}{4},\frac{\pi}{2}]$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $b:[-1,0)U(0,1]$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $c:[-3,-1)U(-1,1]$
 \end_inset
 
 
@@ -182,11 +260,32 @@ Sinusoidal Signal
 \begin_inset Formula 
 \[
 f(x)=\left\{ \begin{array}{cc}
-b & -a\leq x\leq a\\
+c*sin(bx) & -a\leq x\leq a\\
 0 & otherwise
 \end{array}\right\} 
 \]
 
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $a:[\frac{\pi}{4},\frac{\pi}{2}]$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $b:[-1,0)U(0,1]$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $c:[-3,-1)U(-1,1]$
 \end_inset
 
 
@@ -200,7 +299,7 @@ Gaussian Signal
 \begin_inset Formula 
 \[
 f(x)=\left\{ \begin{array}{cc}
-b & -a\leq x\leq a\\
+e^{-ax^{2b}} & -a\leq x\leq a\\
 0 & otherwise
 \end{array}\right\} 
 \]
@@ -211,10 +310,28 @@ b & -a\leq x\leq a\\
 \end_layout
 
 \begin_layout Standard
+\begin_inset Formula $a:[\frac{\pi}{4},\frac{\pi}{2}]$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $b:[-10,-1)U(1,10]$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
 
 \series bold
 II.
  Fourier Coefficients
+\end_layout
+
+\begin_layout Standard
+we define the fourier coeffici
 \end_layout
 
 \begin_layout Standard
