@@ -54,5 +54,19 @@ Model B (fourier data)
             accuracy => 97.94%
         a.2.b
             accuracy => 94.82%
-        a.2.c
+        a.2.c4
             accuracy =>97.46
+Model C (Output+Jump Data)
+    - This model is trained on the normal output data as well as where the jumps occur
+        a. 1000 x 5 (signals+jump data)
+    Testing
+            a. 1000 x 5 Fourier Represetnation with N=80 + Trig Spectral Coefficent Jump Data
+            b. 1000 x 5 Fourier Represetnation with N=80 + Trig Spectral Coefficent Jump Data
+            c. 1000 x 5 Signals + Jump Data
+    Results:
+        a.a
+            accuracy => 54.64%
+        a.b
+            accuracy => 40.84%
+        a.c
+            accuracy => 95.66%
