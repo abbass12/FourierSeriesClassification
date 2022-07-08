@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="f43647b0-6fd2-4d13-b2a5-50b77b930a05" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/Fourier.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FunctionDefinitions.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FunctionOperatons.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Generate.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/SignalClassification.ipynb" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/modules.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/FourierSeriesClassification.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.ipynb_checkpoints/ClassifyingSignals-checkpoint.ipynb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.ipynb_checkpoints/ClassifyingSignalsModel2-checkpoint.ipynb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.ipynb_checkpoints/FourierSeries-checkpoint.ipynb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.ipynb_checkpoints/Model3-checkpoint.ipynb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.ipynb_checkpoints/SignalGeneration-checkpoint.ipynb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassifyingSignals.ipynb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/FourierSeries.ipynb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Model1.ipynb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Model1Results.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Model1TrainedTF/keras_metadata.pb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Model1TrainedTF/saved_model.pb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Model1TrainedTF/variables/variables.data-00000-of-00001" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Model1TrainedTF/variables/variables.index" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Model2.ipynb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Model2Results.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Model2TrainedTF/keras_metadata.pb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Model2TrainedTF/saved_model.pb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Model2TrainedTF/variables/variables.data-00000-of-00001" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Model2TrainedTF/variables/variables.index" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Model3.ipynb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Model3Results.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Model3TrainedTF/keras_metadata.pb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Model3TrainedTF/saved_model.pb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Model3TrainedTF/variables/variables.data-00000-of-00001" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Model3TrainedTF/variables/variables.index" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Model4.ipynb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Model4Results.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Model4TrainedTF/keras_metadata.pb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Model4TrainedTF/saved_model.pb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Model4TrainedTF/variables/variables.data-00000-of-00001" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Model4TrainedTF/variables/variables.index" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ModelB.ipynb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ModelBa.ipynb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ModelC.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/ModelC.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Report.lyx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Report.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SignalGeneration2.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/SignalGeneration2.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SignalGraphs.ipynb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Summary.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/archive/.ipynb_checkpoints/FourierSeries-checkpoint.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/archive/.ipynb_checkpoints/FourierSeries-checkpoint.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/archive/FourierSeries.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/archive/FourierSeries.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fourieraccuracy.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/images/optimalnoiseparameter.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/noiseParameter.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+        <option value="Jupyter Notebook" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="2ALELTM9CIQDp3YeBXNs9ejd2Tk" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Abbass/Documents/FourierSeriesClassification&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;debugger.dataViews.python.type.renderers&quot;
+  }
+}</component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Abbass\Documents\FourierSeriesClassification" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Abbass\Documents\FourierSeriesClassification\visualize-neural-network-master" />
+      <recent name="C:\Users\Abbass\Documents\FourierSeriesClassification" />
+    </key>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="f43647b0-6fd2-4d13-b2a5-50b77b930a05" name="Changes" comment="" />
+      <created>1654780410007</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1654780410007</updated>
+      <workItem from="1654780412442" duration="1772000" />
+      <workItem from="1654782353039" duration="7361000" />
+      <workItem from="1654923030358" duration="832000" />
+      <workItem from="1655308537918" duration="730000" />
+      <workItem from="1655309834647" duration="6056000" />
+      <workItem from="1655322316250" duration="39126000" />
+      <workItem from="1655642925415" duration="3679000" />
+      <workItem from="1655760881545" duration="173000" />
+      <workItem from="1655761077015" duration="5612000" />
+      <workItem from="1655860485101" duration="669000" />
+      <workItem from="1655941723203" duration="16000" />
+      <workItem from="1656028700340" duration="614000" />
+      <workItem from="1656050362890" duration="2979000" />
+      <workItem from="1656353975483" duration="8222000" />
+      <workItem from="1656425673586" duration="3895000" />
+      <workItem from="1656557664309" duration="606000" />
+      <workItem from="1656596545238" duration="594000" />
+      <workItem from="1656770936603" duration="3686000" />
+      <workItem from="1656939538482" duration="56441000" />
+      <workItem from="1657146374363" duration="39057000" />
+      <workItem from="1657252462709" duration="17336000" />
+    </task>
+    <task id="LOCAL-00001" summary="Fixed issue with fourier Graphing error">
+      <created>1654810400960</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1654810400960</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Improved Models for Training/Classification">
+      <created>1655481927142</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1655481927142</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Worked on IFFT Implementation">
+      <created>1656098462579</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1656098462579</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Jump Data + Model">
+      <created>1656363352036</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1656363352036</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Jump Data + Model (IMPROVED)">
+      <created>1656433318259</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1656433318259</updated>
+    </task>
+    <task id="LOCAL-00006" summary="extracted where the jumps occur">
+      <created>1656912220049</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1656912220049</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Fun with RNN">
+      <created>1657035850310</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1657035850311</updated>
+    </task>
+    <task id="LOCAL-00008" summary="Figired out: 4 Dim Matrix as input to a neural network">
+      <created>1657209107113</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1657209107113</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Fixed issue with fourier Graphing error" />
+    <MESSAGE value="Improved Models for Training/Classification" />
+    <MESSAGE value="Worked on IFFT Implementation" />
+    <MESSAGE value="Jump Data + Model" />
+    <MESSAGE value="Jump Data + Model (IMPROVED)" />
+    <MESSAGE value="extracted where the jumps occur" />
+    <MESSAGE value="Fun with RNN" />
+    <MESSAGE value="Figired out: 4 Dim Matrix as input to a neural network" />
+    <option name="LAST_COMMIT_MESSAGE" value="Figired out: 4 Dim Matrix as input to a neural network" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="jupyter-line">
+          <url>notebook://C:/Users/Abbass/Documents/FourierSeriesClassification/Model4.ipynb</url>
+          <line>263</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="jupyter-line">
+          <url>notebook://C:/Users/Abbass/Documents/FourierSeriesClassification/Model4.ipynb</url>
+          <line>267</line>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="jupyter-line">
+          <url>notebook://C:/Users/Abbass/Documents/FourierSeriesClassification/Model4.ipynb</url>
+          <line>270</line>
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="jupyter-line">
+          <url>notebook://C:/Users/Abbass/Documents/FourierSeriesClassification/Model4.ipynb</url>
+          <line>320</line>
+          <option name="timeStamp" value="4" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="jupyter-line">
+          <url>notebook://C:/Users/Abbass/Documents/FourierSeriesClassification/Model1.ipynb</url>
+          <line>464</line>
+          <option name="timeStamp" value="7" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="jupyter-line">
+          <url>notebook://C:/Users/Abbass/Documents/FourierSeriesClassification/ClassifyingSignals.ipynb</url>
+          <line>1039</line>
+          <option name="timeStamp" value="8" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="jupyter-line">
+          <url>notebook://C:/Users/Abbass/Documents/FourierSeriesClassification/ClassifyingSignals.ipynb</url>
+          <line>5</line>
+          <option name="timeStamp" value="9" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+    <watches-manager>
+      <configuration name="Model4">
+        <watch expression="args[1]" />
+      </configuration>
+    </watches-manager>
+  </component>
+</project>
