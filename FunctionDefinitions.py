@@ -23,7 +23,7 @@ def box(x,a=2,b=5,normalized=True,jump=False,type='Trig',noise=False,noiseParame
     y[np.abs(x)<a]=b
     if noise:
         if normalized:
-            y=y/y/np.max(abs(y))
+            y=y/np.max(abs(y))
         return addNoise(y,noiseParameter,x)
     if normalized:
         if jump:

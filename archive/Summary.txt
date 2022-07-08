@@ -39,8 +39,8 @@ Model B (fourier data)
             1 - 20 coefficients
             2 - 80 coefficients
     Testing
-            a. 1000 x 5 Fourier Representation with N=80
-            b. 1000 x 5 Fourier Representation with N=20
+            a. 1000 x 5 fourier Representation with N=80
+            b. 1000 x 5 fourier Representation with N=20
             c.(extra)
               1000 x 5 signals
     Results:
@@ -60,8 +60,8 @@ Model C (Output+Jump Data)
     - This model is trained on the normal output data as well as where the jumps occur
         a. 1000 x 5 (signals+jump data)
     Testing
-            a. 1000 x 5 Fourier Represetnation with N=80 + Trig Spectral Coefficent Jump Data
-            b. 1000 x 5 Fourier Represetnation with N=80 + Trig Spectral Coefficent Jump Data
+            a. 1000 x 5 fourier Represetnation with N=80 + Trig Spectral Coefficent Jump Data
+            b. 1000 x 5 fourier Represetnation with N=80 + Trig Spectral Coefficent Jump Data
             c. 1000 x 5 Signals + Jump Data
     Results:
         a.a
