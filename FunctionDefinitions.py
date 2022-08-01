@@ -79,7 +79,7 @@ def exp(x,a=2,b=2,c=-1,normalized=True,jump=False,type='Trig',noise=False,noiseP
 
         return y
     y=np.zeros(len(x))
-    y[np.abs(x)<a]=c+np.e**(-b*x[[np.abs(x)<a]])
+    y[np.abs(x)<a]=c+np.e**(-b*x[np.abs(x)<a])
     if noise:
         if normalized:
             y=y/np.max(abs(y))

@@ -4,28 +4,41 @@ import numpy as np
 ngrid=1500
 
 idftmatdict={}
-
+ngrid=1500
+xx=np.linspace(-np.pi,np.pi,ngrid+1)
+x=xx[0:-1]
+train={}
+test={}
 SpectDict={'Trig':1,'Poly':2,'Exp':3}
 
-def calculateIdftMat(N):
+N = [15,20,40,45,80,135,160,320,405,640,1215,1280,1500]
+
+
+def calculateIdftMat():
 
     for n in N:
         nmodes = n
-        idftmat = np.zeros((ngrid, nmodes + 1), dtype=complex)
+        idftmat = np.zeros((ngrid, nmodes), dtype=complex)
         nn = np.linspace(-nmodes / 2, nmodes / 2, nmodes + 1)
         for i in range(ngrid):
             for j in range(nmodes):
                 idftmat[i][j] = np.e ** (1j * x[i] * nn[j])
         idftmatdict[n] = idftmat
+        idftmat = np.zeros((ngrid, nmodes-1), dtype=complex)
+
+        for i in range(ngrid):
+            for j in range(nmodes-1):
+                idftmat[i][j] = np.e ** (1j * x[i] * nn[j])
+        idftmatdict[n-1] = idftmat
 
 
-'''
+
 def main():
     calculateIdftMat()
 
 if __name__!='__main__':
     calculateIdftMat()
-'''
+
 
 
 def dft(N,M=40):
