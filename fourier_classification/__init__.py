@@ -13,4 +13,4 @@ from fourier_classification.models import *
 from fourier_classification.visualization import *
 from fourier_classification.utils import *
 
-__version__ = "0.1.0"
+__version__ = "1.0"

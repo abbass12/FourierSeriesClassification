@@ -1,8 +1,8 @@
 from setuptools import setup, find_packages
 
 setup(
-    name="fourier_classification",
-    version="0.1.0",
+    name="Fourier-Series-Python",
+    version="1.0",
     packages=find_packages(),
     install_requires=[
         "numpy>=1.19.0",
@@ -15,6 +15,24 @@ setup(
     author="Abbass Srour",
     author_email="abbasss@umich.edu",
     description="A package for classifying 1D signals using Fourier Series and Machine Learning",
+    long_description=open("README.md", encoding="utf-8").read(),
+    long_description_content_type="text/markdown",
     keywords="fourier, signal processing, machine learning, classification",
     python_requires=">=3.6",
+    classifiers=[
+        "Development Status :: 5 - Production/Stable",
+        "Intended Audience :: Science/Research",
+        "License :: OSI Approved :: MIT License",
+        "Programming Language :: Python :: 3",
+        "Programming Language :: Python :: 3.6",
+        "Programming Language :: Python :: 3.7",
+        "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3.9",
+        "Programming Language :: Python :: 3.10",
+        "Programming Language :: Python :: 3.11",
+        "Operating System :: OS Independent",
+        "Topic :: Scientific/Engineering :: Mathematics",
+        "Topic :: Scientific/Engineering :: Artificial Intelligence",
+        "Topic :: Software Development :: Libraries :: Python Modules",
+    ],
 )
