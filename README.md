@@ -1,6 +1,6 @@
 # Fourier Series Signal Classification
 
-**Version 2.1.0-preprint**
+**Version 2.1.3-preprint**
 
 [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/abbass12/FourierSeriesClassification/blob/main/notebooks/Confirmatory_Validation_Colab.ipynb)
 [![Launch on Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/abbass12/FourierSeriesClassification/main?labpath=notebooks%2FInteractive_Signal_Demo.ipynb)
@@ -36,7 +36,7 @@ A separate fixed-split ECG200 screening uses the UCR archive's 100/100 train/tes
 | Fourier plus inferred jumps | 79.00% | 74.26% |
 | Compact 1D CNN | 85.00% | 83.30% |
 
-The current inferred-jump implementation again did not improve classification. Results, protocol, and limitations are in [`analysis/ecg200_screening_interpretation.md`](analysis/ecg200_screening_interpretation.md), with outputs in [`test_results/ECG200_screening/`](test_results/ECG200_screening/). The data itself is not redistributed in this repository; obtain and cite it from the [UCR archive](https://www.cs.ucr.edu/~eamonn/time_series_data_2018/).
+The current inferred-jump implementation again did not improve classification. The initial descriptor ablation found 84.33% for locations only, 83.33% for magnitudes only, and 79.00% for the combined descriptor, versus 91.67% for Fourier features alone. The initial concentration-factor screening found 79.00%, 79.00%, and 85.00% for trigonometric, polynomial, and exponential combined descriptors, respectively. These are narrow three-seed screening results, not general conclusions. Results, protocol, and limitations are in [`analysis/ecg200_screening_interpretation.md`](analysis/ecg200_screening_interpretation.md), with outputs in [`test_results/ECG200_screening/`](test_results/ECG200_screening/), [`test_results/ECG200_locations/`](test_results/ECG200_locations/), [`test_results/ECG200_magnitudes/`](test_results/ECG200_magnitudes/), [`test_results/ECG200_poly/`](test_results/ECG200_poly/), and [`test_results/ECG200_exp/`](test_results/ECG200_exp/). The data itself is not redistributed in this repository; obtain and cite it from the [UCR archive](https://www.cs.ucr.edu/~eamonn/time_series_data_2018/).
 
 ## Repository Structure
 

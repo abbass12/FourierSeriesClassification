@@ -1,6 +1,6 @@
 # Submission Readiness Gate
 
-**Version:** 2.1.0-preprint
+**Version:** 2.1.3-preprint
 
 ## Current decision
 
@@ -14,9 +14,10 @@
 | Deterministic synthetic data and noise | Complete | Seeded NumPy generator in `src/signals.py` |
 | Stratified split | Complete | `train_test_split_signals()` and unit test |
 | Restored best validation checkpoint | Complete | Deep-copied state dictionary in `src/models.py` |
-| Unit tests | Complete | `test_results/unit_tests.md`, 6 passing tests |
+| Unit tests | Complete | `test_results/unit_tests.md`, 10 passing tests |
 | Repeated-seed smoke workflow | Complete | `run_repeated_validation.py` and `test_results/repeated_seed_smoke_v2/` |
 | Citation audit | Complete for current draft | `paper/references.bib` and `analysis/` research log |
+| Public fixed-split screening | Complete but insufficient alone | ECG200 protocol, results, and initial ablations under `test_results/ECG200_*` |
 | Colab execution notebook | Complete | `notebooks/Full_Experiment_Colab.ipynb` |
 | Draft outreach letters | Complete | `outreach/feedback_request_drafts.md` |
 
@@ -28,8 +29,8 @@
 | Larger sample regime | Current smoke configuration is not a final benchmark. | At least 1000 examples per class, or a justified power analysis. |
 | Hyperparameter protocol | Architecture/training choices must be selected without using test data. | Search space, validation selection rule, and compute budget. |
 | Strong baselines | Raw MLP alone is not representative of modern time-series classification. | CNN/InceptionTime-like and ROCKET/MiniROCKET-like comparisons. |
-| Ablation study | Need to determine whether any effect is caused by jump locations, magnitudes, concentration factor, or extra parameters. | Prespecified ablation table. |
-| Public real or standard data | Synthetic signals alone cannot establish general applicability. | At least one public benchmark or real dataset with licensing/citation details. |
+| Ablation replication | Initial ECG200 descriptor and concentration-factor screens are complete, but one short binary dataset is insufficient. | Replicated ablation matrix across the full benchmark suite. |
+| Multi-dataset external evaluation | One ECG200 screen does not establish general applicability. | A prespecified public benchmark suite with licensing/citation details and complete per-dataset outputs. |
 | Statistics | A single accuracy does not quantify uncertainty. | Per-seed metrics, confidence intervals, effect sizes, paired tests. |
 | Paper compile and author verification | MDPI format and all author declarations must be correct. | Clean PDF, verified affiliations, funding, authorship, AI disclosure, conflicts, data statement. |
 | External feedback | The feature construction merits domain-expert review. | Optional but strongly recommended feedback from spectral-methods and time-series experts. |

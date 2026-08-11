@@ -1,6 +1,6 @@
 # Publication and Feedback Plan
 
-**Status:** Pre-submission research plan, version 2.1.0-preprint. This document replaces the prior plan because the claimed single-run performance gain for Fourier-plus-jump features was not reproduced by the corrected repeated-seed smoke validation.
+**Status:** Pre-submission research plan, version 2.1.3-preprint. This document replaces the prior plan because the claimed single-run performance gain for Fourier-plus-jump features was not reproduced by the corrected repeated-seed smoke validation.
 
 ## Publication decision
 
