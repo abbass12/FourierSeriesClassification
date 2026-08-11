@@ -2,7 +2,8 @@
 
 **Version 2.1.0-preprint**
 
-[![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/abbass12/FourierSeriesClassification/blob/main/notebooks/Full_Experiment_Colab.ipynb)
+[![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/abbass12/FourierSeriesClassification/blob/main/notebooks/Confirmatory_Validation_Colab.ipynb)
+[![Launch on Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/abbass12/FourierSeriesClassification/main?labpath=notebooks%2FInteractive_Signal_Demo.ipynb)
 
 ## Project Status
 
@@ -32,6 +33,7 @@ FourierSeriesClassification/
 ├── SUBMISSION_READINESS.md           # Required gates before external submission
 ├── SUBMISSION_PLAN.md                # Journal and outreach planning notes
 ├── requirements.txt                  # Python dependencies
+├── environment.yml                   # Binder/Jupyter environment specification
 ├── run_experiment.py                 # Legacy one-off experiment runner
 ├── run_repeated_validation.py        # Repeated-seed statistical validation runner
 ├── src/

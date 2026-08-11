@@ -1,0 +1,16 @@
+name: fourier-signal-classification
+channels:
+  - conda-forge
+  - pytorch
+dependencies:
+  - python=3.11
+  - pip
+  - numpy>=1.24
+  - scipy>=1.10
+  - matplotlib>=3.7
+  - seaborn>=0.12
+  - jupyterlab>=4.0
+  - ipywidgets>=8.0
+  - pip:
+      - torch>=2.0
+      - pytest>=8.0

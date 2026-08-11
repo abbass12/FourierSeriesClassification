@@ -120,7 +120,7 @@ The pilot does not reproduce an apparent advantage for inferred jump features re
 
 The absence of a demonstrated pilot benefit does not invalidate concentration-factor theory. Equation~\eqref{eq:concentration} concerns the extraction of discontinuity information from spectral data under mathematical assumptions; it does not imply that a particular neural-network architecture will improve classification accuracy after zero padding, peak selection, and finite-sample optimization. This distinction should guide any later performance claim.
 
-The comparison is also narrow relative to modern time-series classification. Strong external baselines include InceptionTime~\cite{fawaz2020inceptiontime} and ROCKET~\cite{dempster2020rocket}, and the broader literature evaluates on standardized collections such as the UCR/UEA archive~\cite{bagnall2017bakeoff,fawaz2019review}. A publication-quality study must add these comparisons or clearly restrict its claim to an educational synthetic benchmark. Fourier-based neural approaches, including Fourier neural operators, show that spectral parameterizations remain an active design space, but they address a different function-learning setting and are not a substitute for direct classification baselines~\cite{li2021fno}.
+The comparison is also narrow relative to modern time-series classification. Strong external baselines include InceptionTime~\cite{fawaz2020inceptiontime} and ROCKET~\cite{dempster2020rocket}, and the broader literature evaluates on standardized collections such as the UCR/UEA archive~\cite{dau2019ucr,bagnall2017bakeoff,fawaz2019review}. A publication-quality study must add these comparisons or clearly restrict its claim to an educational synthetic benchmark. Fourier-based neural approaches, including Fourier neural operators, show that spectral parameterizations remain an active design space, but they address a different function-learning setting and are not a substitute for direct classification baselines~\cite{li2021fno}.
 
 \section{Confirmatory Evaluation Plan}
 
@@ -130,7 +130,7 @@ Before external submission, the following preregistered protocol must be complet
     \item Select all hyperparameters using validation data only and report the full search space, selection rule, and compute environment.
     \item Compare Models A--C against at least a one-dimensional CNN or InceptionTime-style baseline and a ROCKET/MiniROCKET-style baseline under matched splits.
     \item Conduct a concentration-factor ablation (trigonometric, polynomial, and exponential) and a jump-feature ablation (locations only, magnitudes only, both, and no jump descriptors).
-    \item Evaluate at least one public real or standard benchmark dataset. Claims must be limited to the domains actually evaluated.
+    \item Evaluate at least one public real or standard benchmark dataset, beginning with a documented fixed-split UCR-format dataset~\cite{dau2019ucr}. Claims must be limited to the domains actually evaluated.
     \item Report per-seed results, mean $\pm$ standard deviation, confidence intervals, effect sizes, paired tests, class-wise metrics, confusion matrices, runtime, and parameter counts.
 \end{enumerate}
 

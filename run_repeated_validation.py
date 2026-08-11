@@ -75,6 +75,8 @@ def run_one_seed(
     snr_db: float | None,
     epochs: int,
     batch_size: int,
+    sigma_type: str,
+    jump_feature_mode: str,
     device: str,
 ) -> List[Dict[str, float]]:
     """Train A, B, and C once each and return accuracy records."""
@@ -125,15 +127,19 @@ def run_one_seed(
     # Model C: Fourier coefficients plus fixed-length jump features.
     max_jumps = 4
     X_train_fj = signals_to_fourier_with_jumps(
-        split["X_train"], x, n_modes=n_modes, max_jumps=max_jumps
+        split["X_train"], x, n_modes=n_modes, max_jumps=max_jumps,
+        sigma_type=sigma_type, feature_mode=jump_feature_mode
     )
     X_val_fj = signals_to_fourier_with_jumps(
-        split["X_val"], x, n_modes=n_modes, max_jumps=max_jumps
+        split["X_val"], x, n_modes=n_modes, max_jumps=max_jumps,
+        sigma_type=sigma_type, feature_mode=jump_feature_mode
     )
     X_test_fj = signals_to_fourier_with_jumps(
-        split["X_test"], x, n_modes=n_modes, max_jumps=max_jumps
+        split["X_test"], x, n_modes=n_modes, max_jumps=max_jumps,
+        sigma_type=sigma_type, feature_mode=jump_feature_mode
     )
     fourier_dim = 2 * n_modes
+    jump_dim = X_train_fj.shape[1] - fourier_dim
     set_all_seeds(seed + 300)
     c_train = prepare_dataloader_with_jumps(
         X_train_fj[:, :fourier_dim], X_train_fj[:, fourier_dim:], split["y_train"], batch_size
@@ -145,7 +151,7 @@ def run_one_seed(
         X_test_fj[:, :fourier_dim], X_test_fj[:, fourier_dim:], split["y_test"], batch_size, False
     )
     model_c = SignalClassifierWithJumps(
-        fourier_dim=fourier_dim, jump_dim=2 * max_jumps, n_classes=5
+        fourier_dim=fourier_dim, jump_dim=jump_dim, n_classes=5
     )
     train_model(model_c, c_train, c_val, n_epochs=epochs, device=device, model_type="C")
     acc_c, _ = evaluate_model(model_c, c_test, device=device, model_type="C")
@@ -163,13 +169,20 @@ def main() -> None:
     parser.add_argument("--snr", type=float, default=None)
     parser.add_argument("--epochs", type=int, default=40)
     parser.add_argument("--batch-size", type=int, default=64)
+    parser.add_argument("--sigma-type", choices=["trig", "poly", "exp"], default="trig")
+    parser.add_argument(
+        "--jump-feature-mode", choices=["locations", "magnitudes", "both"], default="both"
+    )
     parser.add_argument("--output-dir", type=Path, default=ROOT / "test_results" / "repeated_seed")
     args = parser.parse_args()
 
     device = "cuda" if torch.cuda.is_available() else "cpu"
     args.output_dir.mkdir(parents=True, exist_ok=True)
     print(f"Device: {device}")
-    print(f"Seeds: {args.seeds}; samples/type: {args.samples_per_type}; modes: {args.modes}")
+    print(
+        f"Seeds: {args.seeds}; samples/type: {args.samples_per_type}; modes: {args.modes}; "
+        f"sigma: {args.sigma_type}; jump features: {args.jump_feature_mode}"
+    )
 
     rows: List[Dict[str, float]] = []
     for seed in args.seeds:
@@ -182,6 +195,8 @@ def main() -> None:
             snr_db=args.snr,
             epochs=args.epochs,
             batch_size=args.batch_size,
+            sigma_type=args.sigma_type,
+            jump_feature_mode=args.jump_feature_mode,
             device=device,
         )
         rows.extend(seed_rows)
@@ -228,6 +243,8 @@ def main() -> None:
             "snr_db": args.snr,
             "epochs": args.epochs,
             "batch_size": args.batch_size,
+            "sigma_type": args.sigma_type,
+            "jump_feature_mode": args.jump_feature_mode,
             "device": device,
         },
         "summary": summary,

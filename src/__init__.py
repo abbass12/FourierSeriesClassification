@@ -26,3 +26,7 @@ from .models import (
     train_model, evaluate_model,
     prepare_dataloader, prepare_dataloader_with_jumps,
 )
+
+from .benchmarks import (
+    load_ucr_univariate, stratified_train_validation_split, z_normalize_per_series,
+)

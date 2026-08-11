@@ -90,3 +90,51 @@ def test_cnn_baseline_accepts_raw_signal_batch():
     model = Conv1DSignalClassifier(n_classes=5)
     logits = model(torch.zeros((3, 128), dtype=torch.float32))
     assert logits.shape == (3, 5)
+
+
+def test_jump_feature_ablation_modes_have_expected_dimensions():
+    """Location-only and magnitude-only ablations retain fixed-size vectors."""
+    from fourier import extract_jump_features, signals_to_fourier_with_jumps
+    x = generate_grid(64)
+    signal = np.where(x > 0, 1.0, -1.0)
+    locations = extract_jump_features(signal, x, n_modes=16, max_jumps=3,
+                                      feature_mode="locations")
+    magnitudes = extract_jump_features(signal, x, n_modes=16, max_jumps=3,
+                                       feature_mode="magnitudes")
+    both = extract_jump_features(signal, x, n_modes=16, max_jumps=3,
+                                 feature_mode="both")
+    batch = signals_to_fourier_with_jumps(
+        np.stack([signal, signal]), x, n_modes=16, max_jumps=3,
+        feature_mode="locations"
+    )
+    assert locations.shape == (3,)
+    assert magnitudes.shape == (3,)
+    assert both.shape == (6,)
+    assert batch.shape == (2, 35)
+
+
+def test_ucr_loader_and_stratified_validation_split(tmp_path):
+    """A local UCR-style dataset loads without test-label leakage."""
+    from benchmarks import load_ucr_univariate, stratified_train_validation_split
+    train = np.array([
+        [10, 1.0, 2.0, 3.0, 4.0],
+        [10, 2.0, 3.0, 4.0, 5.0],
+        [20, 4.0, 3.0, 2.0, 1.0],
+        [20, 5.0, 4.0, 3.0, 2.0],
+    ])
+    test = np.array([
+        [10, 0.0, 1.0, 0.0, 1.0],
+        [20, 1.0, 0.0, 1.0, 0.0],
+    ])
+    np.savetxt(tmp_path / "Tiny_TRAIN.tsv", train, delimiter="\t")
+    np.savetxt(tmp_path / "Tiny_TEST.tsv", test, delimiter="\t")
+    dataset = load_ucr_univariate(tmp_path, "Tiny")
+    split = stratified_train_validation_split(
+        dataset["X_train"], dataset["y_train"], validation_ratio=0.5, seed=1
+    )
+    assert dataset["X_train"].shape == (4, 4)
+    assert dataset["X_test"].shape == (2, 4)
+    assert dataset["n_classes"] == 2
+    assert set(dataset["y_train"]) == {0, 1}
+    assert set(split["y_train"]) == {0, 1}
+    assert set(split["y_val"]) == {0, 1}

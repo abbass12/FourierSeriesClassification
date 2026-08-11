@@ -1,0 +1,17 @@
+cff-version: 1.2.0
+message: "If you use this reproducibility package, please cite the software release and the associated pilot manuscript."
+title: "FourierSeriesClassification"
+version: "2.1.0-preprint"
+date-released: 2026-08-11
+type: software
+authors:
+  - family-names: Srour
+    given-names: Abbass
+repository-code: "https://github.com/abbass12/FourierSeriesClassification"
+abstract: "Reproducible pilot-study code for Fourier-feature and concentration-factor jump-descriptor signal classification experiments."
+keywords:
+  - Fourier analysis
+  - signal classification
+  - concentration factors
+  - reproducibility
+license: "NOASSERTION"

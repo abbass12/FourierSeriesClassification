@@ -1,126 +1,43 @@
-# Journal Submission and Outreach Plan
+# Publication and Feedback Plan
 
-**Version 1.0.0**
+**Status:** Pre-submission research plan, version 2.1.0-preprint. This document replaces the prior plan because the claimed single-run performance gain for Fourier-plus-jump features was not reproduced by the corrected repeated-seed smoke validation.
 
-## Target Journals (Ranked by Fit)
+## Publication decision
 
-| # | Journal | Publisher | IF | APC | Review Time | Fit Rationale |
-|---|---------|-----------|-----|-----|-------------|---------------|
-| 1 | **Mathematics** | MDPI | 2.3 | ~$2,790 | 30-45 days | Open access, fast review, accepts applied math + ML |
-| 2 | **Applied and Computational Harmonic Analysis** | Elsevier | 2.5 | Free (subscription) | 3-6 months | Perfect fit: Fourier analysis + computation |
-| 3 | **Digital Signal Processing** | Elsevier | 2.9 | Free (subscription) | 2-4 months | Signal processing + ML focus |
-| 4 | **Journal of Computational and Applied Mathematics** | Elsevier | 2.1 | Free (subscription) | 2-4 months | Computational math focus |
-| 5 | **Signal Processing** | Elsevier | 4.4 | Free (subscription) | 3-6 months | Higher impact, more competitive |
-| 6 | **IEEE Signal Processing Letters** | IEEE | 3.2 | Free (subscription) | 1-2 months | Short papers, fast turnaround |
+The manuscript is **not ready for journal submission**. It currently documents a transparent synthetic-data pilot and a confirmatory protocol. The pilot does not establish that concentration-factor jump descriptors improve classification, nor does it establish generalization to real signals. A final target journal should be selected only after the blocking validation work in [`SUBMISSION_READINESS.md`](SUBMISSION_READINESS.md) is complete.
 
-### Recommended Strategy
+## Provisional journal fit
 
-Submit to **MDPI Mathematics** first for fast turnaround and open access visibility. If rejected, escalate to **Digital Signal Processing** or **JCAM**. The paper's interdisciplinary nature (math + ML) makes MDPI Mathematics the ideal first target.
+| Journal or venue category | Potential fit after confirmatory work | Condition for a credible submission | Current recommendation |
+|---|---|---|---|
+| Applied and Computational Harmonic Analysis | High only for a genuinely new mathematical/spectral-method contribution | A rigorous advance in edge recovery or spectral feature construction, supported by theory and experiments | Not appropriate for the current pilot alone |
+| Digital Signal Processing | Potentially suitable for applied signal-classification work | Real or standard public signals, competitive signal-processing baselines, and a clear empirical contribution | Consider after benchmark validation |
+| Journal of Computational and Applied Mathematics | Potentially suitable for computational-method work | Careful numerical methodology, reproducibility, and substantive computational insight beyond a course-project replication | Consider after a robust ablation and analysis |
+| Mathematics | Potentially suitable for an applied-mathematics methods paper | Transparent scope fit, strong mathematical exposition, and completed validation; check the current official author instructions before submission | Possible later option, not a fast-track default |
+| Conference/workshop or archival preprint | Useful for early scholarly feedback | Clearly label as a preprint/pilot and do not claim a validated accuracy improvement | Consider after author review |
 
-## Researchers to Contact for Feedback
+Publisher metrics, publication charges, and review times change frequently and are deliberately not listed here. They must be checked on the official journal page at the time of submission. The current scope and author-instruction notes are preserved under [`analysis/`](analysis/).
 
-### Primary Contacts (Directly Relevant Work)
+## Evidence that must exist before targeting a journal
 
-| Name | Affiliation | Relevance | Email Pattern |
-|------|-------------|-----------|---------------|
-| **Anne Gelb** | Dartmouth College | Originator of the edge detection method we use; her concentration factor work is the foundation of our Model C | anne.gelb@dartmouth.edu |
-| **Eitan Tadmor** | University of Maryland (CSCAMM) | Co-author of the Gelb-Tadmor method; expert in spectral methods | tadmor@cscamm.umd.edu |
-| **Rick Archibald** | Oak Ridge National Lab | Collaborated with Gelb on MRI Fourier reconstruction | archibaldrk@ornl.gov |
+The final article needs a complete repeated-seed study, validation-only hyperparameter selection, meaningful ablations of the concentration factor and jump descriptors, at least one modern classification baseline, and at least one public real-world or standardized benchmark. It must report all runs rather than only the best run, including confidence intervals, class-wise performance, paired comparisons, runtime, parameter counts, and limitations. The current code supports stratified splits, deterministic synthetic generation, validated checkpoint restoration, an MLP raw baseline, a Fourier MLP, a Fourier-plus-jump MLP, and a compact CNN baseline; the public-benchmark and stronger-baseline components remain incomplete.
 
-### Secondary Contacts (Related ML + Signal Processing)
+## Expert feedback strategy
 
-| Name | Affiliation | Relevance |
-|------|-------------|-----------|
-| **Tim O'Shea** | Virginia Tech / DeepSig | Pioneer in deep learning for radio signal classification (RML datasets) |
-| **Yue Zhao** | USC | Machine learning for time series and signal anomaly detection |
-| **Dong Yu** | Tencent AI Lab | Deep learning for signal processing |
+The purpose of initial outreach is methodological feedback, not a request for endorsement, authorship, or expedited publication. Draft messages are retained in [`outreach/feedback_request_drafts.md`](outreach/feedback_request_drafts.md) and must be reviewed by the author before sending.
 
-### University of Michigan Contacts
+| Potential contact | Relevance | Verification source |
+|---|---|---|
+| Anne E. Gelb, Dartmouth College | Co-author of the foundational concentration-factor spectral edge-detection papers | [Dartmouth faculty profile](https://faculty-directory.dartmouth.edu/anne-e-gelb) |
+| Eitan Tadmor, University of Maryland | Co-author of the foundational spectral edge-detection work | [University of Maryland profile](https://www.math.umd.edu/~tadmor/) |
+| Jeffrey A. Fessler, University of Michigan | Statistical signal processing, machine learning, optimization, inverse problems, and MRI | [University of Michigan profile](https://medschool.umich.edu/profile/1686/jeffrey-fessler) |
 
-| Name | Department | Relevance |
-|------|-----------|-----------|
-| **Jeffrey Fessler** | EECS | MRI reconstruction, signal processing, Fourier methods |
-| **Laura Balzano** | EECS | Signal processing, machine learning |
-| **Anna Gilbert** | Mathematics | Compressed sensing, Fourier analysis |
+Do not send messages automatically. Each email must include a concise, honest description of the current pilot, a link to the reproducible repository, and one or two specific questions. It must not state or imply that the method has already been validated or accepted.
 
-## Outreach Email Template
+## Future cover-letter template
 
-### For Feedback Request (to Gelb/Tadmor)
+A journal cover letter must not be used until all empirical claims in the manuscript are supported by the completed evidence package. At that point, it should state the final manuscript title, its narrow validated contribution, the target journal’s scope fit, the code/data availability, prior-publication status, author declarations, and any suggested reviewers. It must not describe uncompleted experiments, unverified performance, or a submission as “accepted.”
 
-```
-Subject: Feedback Request: Using Your Edge Detection Method for ML Signal Classification
+## Immediate sequence
 
-Dear Professor [Name],
-
-I am writing to request your feedback on a manuscript that builds directly upon your foundational work on edge detection from spectral data (ACHA 1999, SIAM J. Numer. Anal. 2000).
-
-In our paper, "Using Fourier Series and Machine Learning to Classify Signals," we demonstrate that explicitly incorporating jump discontinuity information (extracted via your concentration factor method) as features for neural network classification significantly improves accuracy compared to using raw signal data or Fourier coefficients alone.
-
-Key findings:
-- Model C (Fourier + jump features) achieves 95.4% accuracy vs 93.0% for raw data
-- The improvement is most pronounced for signals with discontinuities
-- Jump information compensates for limited frequency resolution at low mode counts
-
-The manuscript and reproducible code are available at:
-- Paper: [attached/link]
-- Code: https://github.com/abbass12/FourierSeriesClassification
-
-I would greatly appreciate any feedback on the mathematical rigor of our approach, particularly regarding the application of concentration factors in this ML context.
-
-Thank you for your time and for the foundational work that made this research possible.
-
-Best regards,
-Abbass Srour
-University of Michigan
-abbasss@umich.edu
-```
-
-### For Journal Submission Cover Letter
-
-```
-Dear Editor,
-
-We are pleased to submit our manuscript entitled "Using Fourier Series and Machine Learning to Classify Signals" for consideration in Mathematics.
-
-This paper investigates whether Fourier series coefficients, combined with explicit jump discontinuity information extracted via concentration factors, can improve neural network-based signal classification. Our key contribution is the novel integration of the Gelb-Tadmor edge detection method as a feature extraction step for machine learning, demonstrating that mathematical properties of Fourier series can be leveraged to enhance classification performance.
-
-The manuscript includes:
-- Complete mathematical framework for the approach
-- Reproducible experimental results (code available on GitHub)
-- Interactive demonstrations via Google Colab
-
-This work has not been published elsewhere and is not under consideration by another journal.
-
-Sincerely,
-Abbass Srour
-```
-
-## Submission Checklist
-
-- [x] Codebase modernized and pushed to GitHub
-- [x] Experiments replicated with reproducible results
-- [x] Figures generated at publication quality
-- [x] LaTeX paper written in MDPI format
-- [x] References verified (DOIs added, years corrected)
-- [x] Interactive notebook created for reviewers
-- [ ] Run experiments on Google Colab with GPU for larger dataset (1000+ samples per type)
-- [ ] Create MDPI account and submit manuscript
-- [ ] Send feedback request emails to Gelb and Tadmor
-- [ ] Contact UMich professors for potential collaboration/endorsement
-
-## Timeline
-
-| Week | Action |
-|------|--------|
-| Week 1 | Run full experiments on Colab GPU, finalize paper |
-| Week 2 | Send outreach emails, incorporate any quick feedback |
-| Week 3 | Submit to MDPI Mathematics |
-| Week 4+ | Respond to reviewer comments (expected 30-45 day review) |
-
-## Notes on Strengthening the Paper
-
-1. **Increase dataset size**: Run with 2000+ samples per type on Colab GPU
-2. **Add real-world signal test**: Consider ECG or seismic data as validation
-3. **Statistical significance**: Add confidence intervals and p-values
-4. **Ablation study**: Test different concentration factor types systematically
-5. **Comparison with CNNs**: Add a CNN baseline for completeness
+First, resolve the Colab session-capacity block or use another available GPU environment. Second, run and archive the GPU screening protocol from `notebooks/Confirmatory_Validation_Colab.ipynb`. Third, complete the concentration-factor and jump-descriptor ablations and add public-benchmark baselines. Fourth, revise the manuscript around the actual results. Fifth, obtain author approval before any external outreach or journal submission.
