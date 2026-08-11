@@ -138,3 +138,16 @@ def test_ucr_loader_and_stratified_validation_split(tmp_path):
     assert set(dataset["y_train"]) == {0, 1}
     assert set(split["y_train"]) == {0, 1}
     assert set(split["y_val"]) == {0, 1}
+
+
+def test_evaluate_model_uses_classifier_output_dimension():
+    """Binary classifiers must produce a 2x2, not hard-coded 5x5, confusion matrix."""
+    import torch
+    from models import SignalClassifier, evaluate_model, prepare_dataloader
+    X = np.zeros((4, 8), dtype=np.float32)
+    y = np.array([0, 1, 0, 1], dtype=np.int64)
+    model = SignalClassifier(input_dim=8, n_classes=2)
+    accuracy, confusion = evaluate_model(model, prepare_dataloader(X, y, batch_size=2, shuffle=False))
+    assert 0.0 <= accuracy <= 1.0
+    assert confusion.shape == (2, 2)
+    assert confusion.sum() == len(y)

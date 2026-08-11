@@ -25,6 +25,19 @@ The current smoke study uses three independent seeds, 80 examples per synthetic 
 
 Raw per-seed outputs and statistical summaries are in [`test_results/repeated_seed_smoke_v2/`](test_results/repeated_seed_smoke_v2/). The result is underpowered and limited to synthetic data.
 
+## Public-Benchmark Screening
+
+A separate fixed-split ECG200 screening uses the UCR archive's 100/100 train/test partition and three training seeds. It is not a leaderboard result or a clinical claim.
+
+| Model | Mean test accuracy | Mean macro F1 |
+|---|---:|---:|
+| Raw MLP | 89.33% | 88.22% |
+| Fourier MLP | 91.67% | 90.86% |
+| Fourier plus inferred jumps | 79.00% | 74.26% |
+| Compact 1D CNN | 85.00% | 83.30% |
+
+The current inferred-jump implementation again did not improve classification. Results, protocol, and limitations are in [`analysis/ecg200_screening_interpretation.md`](analysis/ecg200_screening_interpretation.md), with outputs in [`test_results/ECG200_screening/`](test_results/ECG200_screening/). The data itself is not redistributed in this repository; obtain and cite it from the [UCR archive](https://www.cs.ucr.edu/~eamonn/time_series_data_2018/).
+
 ## Repository Structure
 
 ```text
@@ -35,12 +48,14 @@ FourierSeriesClassification/
 ├── requirements.txt                  # Python dependencies
 ├── environment.yml                   # Binder/Jupyter environment specification
 ├── run_experiment.py                 # Legacy one-off experiment runner
-├── run_repeated_validation.py        # Repeated-seed statistical validation runner
+├── run_repeated_validation.py        # Repeated-seed synthetic validation runner
+├── run_ucr_benchmark.py               # Fixed-split UCR-format benchmark runner
 ├── src/
 │   ├── signals.py                    # Reproducible signal generation and stratified splits
 │   ├── fourier.py                    # FFT features and concentration-factor edge extraction
 │   ├── models.py                     # PyTorch classifiers and early stopping
-│   └── plotting.py                   # Figure-generation utilities
+│   ├── plotting.py                   # Figure-generation utilities
+│   └── benchmarks.py                 # Local UCR-format dataset loading
 ├── notebooks/
 │   ├── Interactive_Signal_Demo.ipynb
 │   └── Full_Experiment_Colab.ipynb

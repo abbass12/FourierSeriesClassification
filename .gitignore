@@ -6,3 +6,6 @@ __pycache__/
 dist/
 build/
 .env
+
+# Third-party benchmark data are downloaded locally and not redistributed.
+data/

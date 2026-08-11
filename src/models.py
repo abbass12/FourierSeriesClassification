@@ -272,14 +272,15 @@ def evaluate_model(model: nn.Module, test_loader: DataLoader,
     Evaluate model on test set.
 
     Returns:
-        accuracy: Overall accuracy
-        confusion_matrix: 5x5 confusion matrix
+        accuracy: Overall accuracy.
+        confusion_matrix: Square matrix sized to the classifier output dimension.
     """
     model = model.to(device)
     model.eval()
 
     all_preds = []
     all_labels = []
+    n_classes: Optional[int] = None
 
     with torch.no_grad():
         for batch in test_loader:
@@ -293,6 +294,7 @@ def evaluate_model(model: nn.Module, test_loader: DataLoader,
                 inputs = inputs.to(device)
                 outputs = model(inputs)
 
+            n_classes = int(outputs.shape[1])
             _, predicted = torch.max(outputs, 1)
             all_preds.extend(predicted.cpu().numpy())
             all_labels.extend(labels.numpy())
@@ -302,8 +304,9 @@ def evaluate_model(model: nn.Module, test_loader: DataLoader,
 
     accuracy = np.mean(all_preds == all_labels)
 
-    # Confusion matrix
-    n_classes = 5
+    # Confusion matrix sized to the classifier output dimension.
+    if n_classes is None:
+        raise ValueError("Cannot evaluate an empty test loader")
     cm = np.zeros((n_classes, n_classes), dtype=int)
     for true, pred in zip(all_labels, all_preds):
         cm[true][pred] += 1

@@ -18,7 +18,7 @@
 \address{University of Michigan}
 \Correspondence{abbasss@umich.edu}
 
-\abstract{This reproducible pilot study examines three representations for classifying synthetic one-dimensional signals: raw samples, truncated Fourier coefficients, and Fourier coefficients augmented with jump descriptors inferred by concentration factors. The implementation is based on a stratified train-validation-test split, seed-controlled data generation, validation-based early stopping, and preserved source code. In a three-seed smoke experiment comprising five balanced synthetic signal families, 80 examples per family, and 12 training epochs, raw samples and Fourier features produced the same mean test accuracy (87.9\%), whereas the Fourier-plus-jump model achieved 80.4\%. These preliminary results do not support a claim that the particular inferred jump-feature implementation improves classification accuracy. Rather, they show that conclusions based on a single split and a single random initialization are unstable and that the usefulness of concentration-factor features is an empirical question. The manuscript provides the mathematical construction, a reproducible experimental protocol, software tests, and a preregistered confirmatory evaluation plan using repeated random seeds and external time-series benchmarks. It is a pre-submission draft and must not be submitted as a final research article until the planned confirmatory experiments have been completed.}
+\abstract{This reproducible pilot study examines three representations for classifying synthetic one-dimensional signals: raw samples, truncated Fourier coefficients, and Fourier coefficients augmented with jump descriptors inferred by concentration factors. The implementation is based on a stratified train-validation-test split, seed-controlled data generation, validation-based early stopping, and preserved source code. In a three-seed synthetic smoke experiment comprising five balanced signal families, 80 examples per family, and 12 training epochs, raw samples and Fourier features produced the same mean test accuracy (87.9\%), whereas the Fourier-plus-jump model achieved 80.4\%. In a separate three-seed fixed-split screening on the public ECG200 benchmark, the Fourier model achieved 91.7\% mean test accuracy, compared with 89.3\% for raw samples and 79.0\% for the Fourier-plus-jump model. These preliminary results do not support a claim that the particular inferred jump-feature implementation improves classification accuracy. Rather, they show that conclusions based on a single split and a single random initialization are unstable and that the usefulness of concentration-factor features is an empirical question. The manuscript provides the mathematical construction, a reproducible experimental protocol, software tests, and a preregistered confirmatory evaluation plan using repeated random seeds and external time-series benchmarks. It is a pre-submission draft and must not be submitted as a final research article until the planned confirmatory experiments have been completed.}
 
 \keyword{Fourier series; concentration factors; edge detection; signal classification; time-series classification; reproducibility; neural networks}
 
@@ -93,9 +93,15 @@ C & Fourier coefficients plus up to four inferred jump pairs & 108 \\
 
 The completed smoke experiment uses three independent seeds ($11$, $23$, and $37$), 80 examples per class, 12 training epochs, batch size 32, and $N=50$ Fourier modes. This small run was designed to test reproducibility plumbing, not to estimate final benchmark performance. For each seed, all models are trained independently and evaluated on the held-out test partition generated with the same seed. We report the mean, sample standard deviation, and a normal-approximation 95\% confidence interval across the three seeds. Two-sided paired Wilcoxon tests are reported descriptively; with only three seeds they are severely underpowered and must not be treated as confirmatory inference.
 
+\subsection{Public-Benchmark Screening Protocol}
+
+As an initial external-data check, we evaluated the same representations on ECG200 from the UCR Time Series Archive~\cite{dau2019ucr}. The public dataset contains a fixed 100-series training set and 100-series test set, with two classes and 96 samples per series. The archive train/test split was preserved. For each of three seeds, we stratified only the training set into 80 training and 20 validation series, z-normalized each series independently, and trained the models for up to 50 epochs with validation early stopping. The Fourier and jump settings were 32 modes, the trigonometric concentration factor, four retained peaks, and the combined location-and-magnitude descriptor. This external screening is small and must not be interpreted as a clinical result or a comparison with UCR leaderboards.
+
 \section{Pilot Results}
 
-Table~\ref{tab:pilot} reports the complete smoke-validation result. Raw samples and Fourier features had identical mean accuracy. The jump-augmented model had a lower mean accuracy, and no paired comparison yielded statistical evidence at conventional levels. These values supersede earlier single-run, single-split values previously retained in the project repository.
+\subsection{Synthetic Smoke Validation}
+
+Table~\ref{tab:pilot} reports the complete synthetic smoke-validation result. Raw samples and Fourier features had identical mean accuracy. The jump-augmented model had a lower mean accuracy, and no paired comparison yielded statistical evidence at conventional levels. These values supersede earlier single-run, single-split values previously retained in the project repository.
 
 \begin{table}[H]
 \caption{Repeated-seed smoke validation. Values are mean test accuracy across three seeds; intervals are normal-approximation 95\% confidence intervals across seeds.}
@@ -114,9 +120,29 @@ C: Fourier plus jumps & 80.42\% & 3.82 pp & [76.10\%, 84.74\%] \\
 
 The mean paired differences were $-7.50$ percentage points for C versus A, $-7.50$ percentage points for C versus B, and approximately zero for B versus A. The corresponding two-sided Wilcoxon p-values were 0.25, 0.25, and 1.00, respectively. These figures are included for transparency; a three-seed experiment cannot support a reliable null or alternative conclusion.
 
+\subsection{ECG200 Screening}
+
+Table~\ref{tab:ecg200} presents the separate public-benchmark screening. The Fourier MLP had the highest mean accuracy and macro F1, while the Fourier-plus-jump model had the lowest mean results and the greatest between-seed variability. Its mean accuracy differences versus the raw MLP, Fourier MLP, and compact CNN were $-10.33$, $-12.67$, and $-6.00$ percentage points, respectively. Each three-seed Wilcoxon comparison had a two-sided p-value of 0.25 and is therefore descriptive only.
+
+\begin{table}[H]
+\caption{ECG200 fixed-split screening over three training seeds. The official test partition was held fixed; mean and sample SD summarize training/validation-split and initialization variation.}
+\label{tab:ecg200}
+\centering
+\begin{tabular}{lrrrr}
+\toprule
+Model & Accuracy mean & Accuracy SD & Macro F1 mean & Macro F1 SD \\
+\midrule
+Raw MLP & 89.33\% & 0.58 pp & 88.22\% & 0.71 pp \\
+Fourier MLP & 91.67\% & 1.15 pp & 90.86\% & 1.30 pp \\
+Fourier plus inferred jumps & 79.00\% & 6.24 pp & 74.26\% & 11.03 pp \\
+Compact 1D CNN & 85.00\% & 2.65 pp & 83.30\% & 3.77 pp \\
+\bottomrule
+\end{tabular}
+\end{table}
+
 \section{Discussion}
 
-The pilot does not reproduce an apparent advantage for inferred jump features reported by earlier one-off experiments. This mismatch is scientifically important. It may arise from small-sample noise, changes in the split and early-stopping implementation, insufficient training of Model C, a suboptimal peak-extraction design, or the fact that the raw/Fourier representation already contains the relevant discriminative information for these synthetic classes. The current evidence does not distinguish these explanations.
+Neither the synthetic pilot nor the ECG200 screening reproduces an apparent advantage for inferred jump features reported by earlier one-off experiments. This mismatch is scientifically important. It may arise from small-sample noise, changes in the split and early-stopping implementation, insufficient training of Model C, a suboptimal peak-extraction design, or the fact that the raw/Fourier representation already contains the relevant discriminative information for these synthetic classes. The current evidence does not distinguish these explanations.
 
 The absence of a demonstrated pilot benefit does not invalidate concentration-factor theory. Equation~\eqref{eq:concentration} concerns the extraction of discontinuity information from spectral data under mathematical assumptions; it does not imply that a particular neural-network architecture will improve classification accuracy after zero padding, peak selection, and finite-sample optimization. This distinction should guide any later performance claim.
 
@@ -136,7 +162,7 @@ Before external submission, the following preregistered protocol must be complet
 
 \section{Conclusions}
 
-The supplied codebase provides a reproducible framework for testing Fourier and concentration-factor representations in signal classification. The completed pilot establishes implementation reproducibility and demonstrates that its prior single-run conclusion was not robust. It does not establish a performance advantage for jump descriptors or a general signal-classification method. The confirmatory plan is therefore a prerequisite for submission, rather than an optional extension.
+The supplied codebase provides a reproducible framework for testing Fourier and concentration-factor representations in signal classification. The completed synthetic and ECG200 screening studies establish implementation reproducibility and demonstrate that the prior single-run conclusion was not robust. It does not establish a performance advantage for jump descriptors or a general signal-classification method. The confirmatory plan is therefore a prerequisite for submission, rather than an optional extension.
 
 \section*{Supplementary Materials}
 The source code, interactive notebooks, raw pilot outputs, unit-test results, generated figures, analysis logs, and the planned full Google Colab experiment are available at \url{https://github.com/abbass12/FourierSeriesClassification}. The repository version associated with this manuscript is 2.1.0-preprint.
