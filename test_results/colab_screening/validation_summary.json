@@ -1,0 +1,37 @@
+{
+  "provenance": {
+    "execution_environment": "Google Colab free Tesla T4 GPU",
+    "pytorch_version": "2.11.0+cu128",
+    "runtime_status": "completed",
+    "wall_clock_seconds": 77.935,
+    "archived_from": "Confirmatory_Validation_Colab.ipynb output",
+    "run_date": "2026-08-11"
+  },
+  "configuration": {
+    "seeds": [11, 23, 37],
+    "n_samples_per_type": 300,
+    "n_points": 1500,
+    "n_modes": 50,
+    "snr_db": null,
+    "epochs": 40,
+    "batch_size": 64,
+    "sigma_type": "trig",
+    "jump_feature_mode": "both",
+    "device": "cuda"
+  },
+  "summary": {
+    "A_raw": {"n_runs": 3, "mean_accuracy": 0.9177777777777778, "sd_accuracy": 0.008388704928078583, "ci95_lower": 0.9082850645229559, "ci95_upper": 0.9272704910325997},
+    "B_fourier": {"n_runs": 3, "mean_accuracy": 0.9333333333333332, "sd_accuracy": 0.020000000000000018, "ci95_lower": 0.9107012027810999, "ci95_upper": 0.9559654638855666},
+    "C_fourier_jumps": {"n_runs": 3, "mean_accuracy": 0.9255555555555555, "sd_accuracy": 0.011706281947614146, "ci95_lower": 0.9123086504895727, "ci95_upper": 0.9388024606215383},
+    "D_cnn": {"n_runs": 3, "mean_accuracy": 0.8911111111111111, "sd_accuracy": 0.024570382652773354, "ci95_lower": 0.8633071057153163, "ci95_upper": 0.9189151165069058}
+  },
+  "paired_tests": {
+    "C_vs_A": {"mean_accuracy_difference": 0.007777777777777772, "wilcoxon_statistic": 0.0, "two_sided_p_value": 0.25},
+    "C_vs_B": {"mean_accuracy_difference": -0.00777777777777781, "wilcoxon_statistic": 0.0, "two_sided_p_value": 0.5},
+    "C_vs_D": {"mean_accuracy_difference": 0.03444444444444442, "wilcoxon_statistic": 0.0, "two_sided_p_value": 0.25},
+    "B_vs_A": {"mean_accuracy_difference": 0.015555555555555581, "wilcoxon_statistic": 0.0, "two_sided_p_value": 0.25},
+    "B_vs_D": {"mean_accuracy_difference": 0.04222222222222224, "wilcoxon_statistic": 0.0, "two_sided_p_value": 0.25},
+    "A_vs_D": {"mean_accuracy_difference": 0.026666666666666655, "wilcoxon_statistic": 0.0, "two_sided_p_value": 0.5}
+  },
+  "interpretation": "This is a three-seed synthetic screening result under the specified generator and protocol. It does not establish generalization to real-world signal-classification tasks or a statistically significant advantage for the jump-augmented representation."
+}
