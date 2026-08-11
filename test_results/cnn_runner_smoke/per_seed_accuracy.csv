@@ -1,0 +1,5 @@
+seed,model,accuracy
+11,A_raw,0.6333333333333333
+11,D_cnn,0.16666666666666666
+11,B_fourier,0.4
+11,C_fourier_jumps,0.6

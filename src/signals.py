@@ -33,11 +33,18 @@ def generate_grid(n_points: int = 1500) -> np.ndarray:
     return x[:-1]
 
 
-def add_noise(signal: np.ndarray, snr_db: float) -> np.ndarray:
-    """Add Gaussian noise to a signal at a specified SNR (in dB)."""
+def add_noise(signal: np.ndarray, snr_db: float,
+              rng: Optional[np.random.Generator] = None) -> np.ndarray:
+    """Add zero-mean Gaussian noise at a specified SNR (in dB).
+
+    An explicit NumPy generator makes the complete synthetic-data pipeline
+    reproducible when a dataset seed is supplied.
+    """
+    if rng is None:
+        rng = np.random.default_rng()
     signal_power = np.mean(signal ** 2)
     noise_power = signal_power / (10 ** (snr_db / 10))
-    noise = np.random.normal(0, np.sqrt(noise_power), len(signal))
+    noise = rng.normal(0, np.sqrt(noise_power), len(signal))
     return signal + noise
 
 
@@ -208,6 +215,7 @@ def generate_dataset(n_samples_per_type: int = 1000,
     x = generate_grid(n_points)
     all_signals = []
     all_labels = []
+    noise_rng = np.random.default_rng(seed + 10_000)
 
     for signal_type, label in SIGNAL_TYPES.items():
         generator = SIGNAL_GENERATORS[signal_type]
@@ -217,7 +225,7 @@ def generate_dataset(n_samples_per_type: int = 1000,
         for params in params_list:
             signal = generator(x, **params)
             if snr_db is not None:
-                signal = add_noise(signal, snr_db)
+                signal = add_noise(signal, snr_db, rng=noise_rng)
             all_signals.append(signal)
             all_labels.append(label)
 
@@ -231,17 +239,29 @@ def train_test_split_signals(X: np.ndarray, y: np.ndarray,
                              train_ratio: float = 0.7,
                              val_ratio: float = 0.1,
                              seed: int = 42) -> Dict:
-    """Split dataset into train/val/test sets."""
+    """Create reproducible, stratified train/validation/test partitions.
+
+    Stratification ensures every class has the same approximate representation
+    in all splits, avoiding accidental changes in class balance between runs.
+    """
+    if not 0 < train_ratio < 1 or not 0 < val_ratio < 1 or train_ratio + val_ratio >= 1:
+        raise ValueError("train_ratio and val_ratio must be in (0, 1) and sum to less than 1")
+
     rng = np.random.default_rng(seed)
-    n = len(y)
-    indices = rng.permutation(n)
+    train_parts, val_parts, test_parts = [], [], []
+    for label in np.unique(y):
+        class_indices = np.flatnonzero(y == label)
+        class_indices = rng.permutation(class_indices)
+        n_class = len(class_indices)
+        n_train = int(n_class * train_ratio)
+        n_val = int(n_class * val_ratio)
+        train_parts.append(class_indices[:n_train])
+        val_parts.append(class_indices[n_train:n_train + n_val])
+        test_parts.append(class_indices[n_train + n_val:])
 
-    n_train = int(n * train_ratio)
-    n_val = int(n * val_ratio)
-
-    train_idx = indices[:n_train]
-    val_idx = indices[n_train:n_train + n_val]
-    test_idx = indices[n_train + n_val:]
+    train_idx = rng.permutation(np.concatenate(train_parts))
+    val_idx = rng.permutation(np.concatenate(val_parts))
+    test_idx = rng.permutation(np.concatenate(test_parts))
 
     return {
         'X_train': X[train_idx], 'y_train': y[train_idx],

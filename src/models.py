@@ -9,6 +9,8 @@ Implements three classification models:
 Uses PyTorch for GPU-accelerated training.
 """
 
+import copy
+
 import torch
 import torch.nn as nn
 import numpy as np
@@ -45,6 +47,42 @@ class SignalClassifier(nn.Module):
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         return self.network(x)
+
+
+class Conv1DSignalClassifier(nn.Module):
+    """Compact one-dimensional CNN baseline for raw sampled signals.
+
+    The architecture is intentionally modest and is not a reimplementation of
+    InceptionTime. It provides a convolutional baseline under the same split,
+    optimizer, and early-stopping protocol as the MLP models.
+    """
+
+    def __init__(self, n_classes: int = 5, dropout: float = 0.2):
+        super().__init__()
+        self.features = nn.Sequential(
+            nn.Conv1d(1, 32, kernel_size=7, padding=3),
+            nn.BatchNorm1d(32),
+            nn.ReLU(),
+            nn.MaxPool1d(2),
+            nn.Conv1d(32, 64, kernel_size=5, padding=2),
+            nn.BatchNorm1d(64),
+            nn.ReLU(),
+            nn.MaxPool1d(2),
+            nn.Conv1d(64, 128, kernel_size=3, padding=1),
+            nn.BatchNorm1d(128),
+            nn.ReLU(),
+            nn.AdaptiveAvgPool1d(1),
+        )
+        self.classifier = nn.Sequential(
+            nn.Flatten(),
+            nn.Dropout(dropout),
+            nn.Linear(128, n_classes),
+        )
+
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        if x.ndim == 2:
+            x = x.unsqueeze(1)
+        return self.classifier(self.features(x))
 
 
 class SignalClassifierWithJumps(nn.Module):
@@ -206,7 +244,7 @@ def train_model(model: nn.Module, train_loader: DataLoader,
         # Early stopping
         if epoch_val_loss < best_val_loss:
             best_val_loss = epoch_val_loss
-            best_model_state = model.state_dict().copy()
+            best_model_state = copy.deepcopy(model.state_dict())
             epochs_without_improvement = 0
         else:
             epochs_without_improvement += 1

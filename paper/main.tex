@@ -1,236 +1,157 @@
-\documentclass[mathematics]{mdpi}
+\documentclass[mathematics,article,submit,moreauthors,pdftex]{mdpi}
 
-\usepackage{tikz}
-\usepackage[export]{adjustbox}
-\usepackage{cancel}
-\usepackage{url}
+\usepackage{booktabs}
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{graphicx}
+\usepackage{url}
 
-\theoremstyle{definition}
-\newtheorem{defn}{Definition}[section]
-\newtheorem{theorem}{Theorem}[section]
-
-\newcommand{\bx}{\mathbf{x}}
-\newcommand{\by}{\mathbf{y}}
-\newcommand{\C}{\mathbb{C}}
 \newcommand{\R}{\mathbb{R}}
-\newcommand{\Z}{\mathbb{Z}}
-\newcommand{\N}{\mathbb{N}}
-
+\newcommand{\C}{\mathbb{C}}
+\DeclareMathOperator{\sgn}{sgn}
 \DeclareMathOperator{\supp}{supp}
 
-\Title{Using Fourier Series and Machine Learning to Classify Signals}
+\Title{Fourier Features and Concentration-Factor Jump Descriptors for Synthetic Signal Classification: A Reproducible Pilot Study}
+
 \Author{Abbass Srour}
 \AuthorNames{Abbass Srour}
 \address{University of Michigan}
 \Correspondence{abbasss@umich.edu}
 
+\abstract{This reproducible pilot study examines three representations for classifying synthetic one-dimensional signals: raw samples, truncated Fourier coefficients, and Fourier coefficients augmented with jump descriptors inferred by concentration factors. The implementation is based on a stratified train-validation-test split, seed-controlled data generation, validation-based early stopping, and preserved source code. In a three-seed smoke experiment comprising five balanced synthetic signal families, 80 examples per family, and 12 training epochs, raw samples and Fourier features produced the same mean test accuracy (87.9\%), whereas the Fourier-plus-jump model achieved 80.4\%. These preliminary results do not support a claim that the particular inferred jump-feature implementation improves classification accuracy. Rather, they show that conclusions based on a single split and a single random initialization are unstable and that the usefulness of concentration-factor features is an empirical question. The manuscript provides the mathematical construction, a reproducible experimental protocol, software tests, and a preregistered confirmatory evaluation plan using repeated random seeds and external time-series benchmarks. It is a pre-submission draft and must not be submitted as a final research article until the planned confirmatory experiments have been completed.}
+
+\keyword{Fourier series; concentration factors; edge detection; signal classification; time-series classification; reproducibility; neural networks}
+
 \begin{document}
 
 \maketitle
 
-\abstract{This study investigates the effectiveness of using Fourier series coefficients as an alternative to raw grid-point data for training feed-forward neural networks in signal classification tasks. Signal classification is a fundamental problem in data analysis with diverse applications, including medical diagnostics, communications, and anomaly detection. We specifically examine whether incorporating explicit jump discontinuity information from signals enhances classification performance compared to approaches that omit this information. To test our hypothesis, we developed and evaluated three neural network models with distinct input representations: Model A uses raw signal data (pixel values), Model B incorporates Fourier coefficients without jump information, and Model C utilizes Fourier coefficients with explicit jump data. Our experiments, conducted across five signal types with varying noise levels, demonstrate that the inclusion of jump data significantly enhances classification performance (93.6\% accuracy for Model C versus 93.0\% for Model A on clean data, and showing increased robustness under noise). These results suggest that Fourier analysis can extract critical features that might otherwise be missed in traditional pixel-based approaches, offering particular benefits for signals containing discontinuities. The findings have important implications for dimensionality reduction in signal processing applications and feature extraction in machine learning contexts, providing a robust framework for classifying diverse signal types in various scientific and engineering disciplines.}
-
-\keyword{Fourier series; machine learning; signal classification; neural networks; jump discontinuities; feature extraction; discontinuity detection; frequency domain analysis}
-
 \section{Introduction}
-Fourier analysis, the study of decomposing general functions into trigonometric or exponential functions with definite frequencies~\cite{fourieranalysis}, has been a fundamental mathematical tool since its discovery by Joseph Fourier in the early 19\textsuperscript{th} century. Despite its age, Fourier analysis has revolutionized modern technology by providing a means to convert signals from the time domain to the frequency domain, enabling phenomena to be analyzed from a different perspective. As noted in~\cite{mathworksIntro}, ``Frequency-domain analysis is widely used in such areas as communications, geology, remote sensing, and image processing. While time-domain analysis shows how a signal changes over time, frequency-domain analysis shows how the signal's energy is distributed over a range of frequencies.''
 
-\subsection{Literature Review}
+Fourier representations provide a mathematically natural way to describe signals by their frequency content~\cite{stein2003fourier,oppenheim2010dsp}. In parallel, modern time-series classification has developed strong empirical baselines, including convolutional architectures, ensembles, and random convolutional-kernel methods~\cite{bagnall2017bakeoff,fawaz2019review,fawaz2020inceptiontime,dempster2020rocket}. These two perspectives motivate a focused question: for a controlled signal-classification task, how does a compact Fourier representation compare with raw samples, and does explicit information about discontinuities add predictive value?
 
-Recent advancements in deep learning have significantly impacted signal classification. Studies from 2023-2025 demonstrate the growing trend of integrating deep neural networks with traditional signal processing techniques to achieve higher accuracy and robustness across various domains. For instance, the recent introduction of Fourier Analysis Networks (FAN)~\cite{fan2024} demonstrates that incorporating periodicity modeling directly into neural network architectures outperforms standard MLPs, Transformers, and CNNs on complex periodic tasks. Similarly, hybrid approaches combining deep learning with signal processing methods in the frequency domain, such as using FFT amplitude and phase for modulation classification, have shown superior performance on datasets like RML2016.10a~\cite{fftsignal2023}. Furthermore, recent work on approximating piecewise smooth functions with neural networks has validated the importance of explicitly modeling jump discontinuities~\cite{piecewiseNN2026}. These studies highlight the increasing sophistication of modern signal classification research, moving beyond conventional time-domain analyses alone to leverage the power of deep feature extraction in the frequency domain.
+A discontinuity is not localized in a truncated Fourier representation in the same manner as it is in the original signal. Nevertheless, concentration-factor methods can recover edge information from spectral data under appropriate piecewise-smoothness assumptions~\cite{gelb1999edges,gelb2000nonlinear}. This work evaluates a simple machine-learning use of those inferred descriptors: peak locations and signed magnitudes of the generalized conjugate partial Fourier sum are appended to Fourier-coefficient features.
 
-This research paper addresses the following question:
+The study is deliberately limited to parameterized synthetic signals. It is therefore not evidence of clinical, industrial, seismic, or other real-world performance. Its contribution is an auditable experimental framework that separates a mathematical feature-extraction hypothesis from a performance claim. All generation, feature extraction, training, evaluation, figures, test results, and planned confirmatory procedures are distributed with the manuscript~\cite{srour2026code}.
 
-\begin{center}
-{\em Can Fourier series approximations be effectively used as an alternative to grid-point data in machine learning applications}?
-\end{center}
+\section{Mathematical Framework}
 
-Fourier series approximations tend to converge to the underlying functions as the number of terms or coefficients increases. This question is particularly relevant given real-world applications in fields like Magnetic Resonance Imaging (MRI)~\cite{mri} and Seismology~\cite{earthquake}, where data is often naturally represented in forms amenable to Fourier analysis rather than as fine grid-point data.
+\subsection{Fourier Representation}
 
-\subsection{Problem Statement}
+Let $f \in L^2(-\pi,\pi)$ be extended $2\pi$-periodically. Its Fourier coefficients and the truncated partial sum are
+\begin{equation}
+\widehat{f}_k = \frac{1}{2\pi}\int_{-\pi}^{\pi} f(x)e^{-ikx}\,dx, \qquad
+S_N f(x) = \sum_{|k|\leq N}\widehat{f}_k e^{ikx}.
+\end{equation}
 
-We consider a one-dimensional model problem of classifying five distinct absolutely-integrable types of signals. While the concept of using Fourier coefficients for signal classification is established in the literature, and discontinuity detection from signals has also been explored, our approach combines these ideas in a novel way by explicitly incorporating jump discontinuity information as a distinct feature for neural network input. This integration aims to leverage the rich information contained in signal discontinuities, which is often overlooked or implicitly handled in traditional Fourier-based or time-domain methods. This explicit incorporation of jump data, derived from the asymptotic behavior of Fourier coefficients, represents an incremental yet impactful advancement in signal classification, particularly for piecewise-smooth signals.
+For a sampled signal, we estimate coefficients with the discrete Fourier transform implemented by the Fast Fourier Transform~\cite{oppenheim2010dsp}. The real and imaginary parts of the selected $N$ coefficients are concatenated, resulting in a $2N$-dimensional real-valued feature vector.
 
-\begin{figure}[htbp]
-	\centering
-	\includegraphics[width=0.8\textwidth]{../results/figures/fig1_signals.png}
-	\caption{Pixel-Data Signals: Five distinct signal types (sine, box, sawtooth, exponential, and Gaussian) represented as discrete samples in the time domain.}
-	\label{fig:signals}
-\end{figure}
+\subsection{Jump Descriptors from Concentration Factors}
 
-\begin{figure}[htbp]
-	\centering
-	\includegraphics[width=0.8\textwidth]{../results/figures/fig2_signals_noise.png}
-	\caption{Pixel-Data Signals corrupted with Gaussian noise (SNR = 20dB): The same five signal types with added noise to simulate real-world measurement conditions.}
-	\label{fig:signalswnoise}
-\end{figure}
+For a piecewise-smooth $f$, define the jump function at $x$ by
+\begin{equation}
+[f](x) = f(x^+) - f(x^-).
+\end{equation}
 
-\begin{figure}[htbp]
-	\centering
-	\includegraphics[width=0.9\textwidth]{../results/figures/fig3_signals_coeffs.png}
-	\caption{Five different signal types (Sine, Box, Sawtooth, Exponential, and Gaussian) and their corresponding Fourier series coefficients. Each signal is normalized to have a maximum amplitude of 1. The Fourier coefficients show the frequency components present in each signal.}
-	\label{fig:signals_and_coeffs}
-\end{figure}
+Following Gelb and Tadmor~\cite{gelb1999edges,gelb2000nonlinear}, a concentration-factor edge approximation takes the form
+\begin{equation}
+E_N^{\sigma}f(x) = i\sum_{|k|\leq N}\widehat{f}_k\,\sgn(k)\,\sigma\!\left(\frac{|k|}{N}\right)e^{ikx},
+\label{eq:concentration}
+\end{equation}
+where $\sigma$ is a concentration factor. Under the assumptions given in the cited theory, the operator concentrates near jumps. The distributed implementation includes trigonometric, polynomial, and exponential concentration factors. The pilot experiment uses the trigonometric factor.
 
-We implement our classifier using a feed-forward neural network, a standard machine learning algorithm. In typical signal classification tasks, neural networks are predominantly trained on grid-point data (i.e., discrete samples in the time domain). 
-Therefore, we investigate the following questions:
-\begin{enumerate}
-    \item Does the performance of a classifier improve if it is instead trained using Fourier series approximations?
-    \item How does the performance of a classifier depend on the number of terms (or equivalently, the number of Fourier series coefficients) used in such Fourier series approximations?
-    \item Can the performance of such a classifier be improved by providing additional data, such as edges in the underlying (piecewise-smooth) signals?
-\end{enumerate}
+The classifier cannot consume a variable number of peaks directly. For every signal, the peak detector sorts candidate jumps by absolute edge magnitude, retains up to four location-magnitude pairs, and pads missing entries with zeros. These descriptors should be interpreted as a practical feature-engineering choice, not as an exact recovery theorem for noisy, sampled observations.
 
 \section{Materials and Methods}
-\subsection{Notations and Definitions}
-\label{sec:defns} 
 
-We use bold typeface and lowercase letters to denote vectors (for example, $\bx\in\C^{N}$) and capital letters in conventional typeface to denote matrices.
+\subsection{Synthetic Dataset}
 
-\begin{defn} ({\em Fourier Series, Coefficients and Partial Sum}) 
-\label{defn:fourier_series_cfs} 
-Let $f:\R\to\C$ be a $2\pi$-periodic function which belongs to the vector space $L^{2}(-\pi,\pi)$. We associate with $f$ the following series -- called the {\em Fourier series} -- 
-\begin{equation}
-	f\sim\sum_{k\in\Z}\widehat{f}_{k}e^{ikx},\label{eq:four_series}
-\end{equation}
-where the coefficients $\widehat{f}_{k}$ are defined as 
-\begin{equation}
-	\widehat{f}_{k}:=\frac{1}{2\pi}\int_{-\pi}^{\pi}f(x)e^{-ikx}dx,\qquad k\in\Z.\label{eq:four_cfs}
-\end{equation}
-Additionally, we define the $N$-th {\em partial Fourier sum} of $f$ to be 
-\begin{equation}
-	S_{N}f(x)=\sum_{|k|\leq N}\widehat{f}_{k}e^{ikx},\qquad x\in\R.\label{eq:partial_sum}
-\end{equation}
-\end{defn} 
+Signals are sampled on 1500 equally spaced points in $[-\pi,\pi)$. Five balanced families are used: a compactly supported sinusoid, box pulse, sawtooth ramp, compactly supported exponential, and compactly supported Gaussian. Within each family, support width and shape parameters are sampled from fixed class-specific distributions. Each signal is normalized to unit maximum absolute amplitude. Gaussian white noise can be added at a prescribed signal-to-noise ratio; the pilot result below uses the clean condition.
 
-\begin{defn} ({\em Jump Function, Locations and Values}) 
-\label{defn:jump_fnc} 
-Let $f:\R\to\C$ be a piecewise-smooth function. We define the {\em jump function} of $f$, denoted as $[f]$, to be 
-\begin{equation}
-	[f](x):=f(x^{+})-f(x^{-}),\quad x\in\R,\label{eq:jump_fnc}
-\end{equation}
-where $f(x^{+})$ and $f(x^{-})$ denote the right- and left-hand limits of $f$ at $x$ respectively. 
-\end{defn} 
+A stratified 70\%/10\%/20\% train-validation-test split is used so that every balanced class contributes equally to every partition. Python, NumPy, and PyTorch pseudorandom generators are seeded per run. The implementation uses NumPy~\cite{harris2020numpy}, SciPy~\cite{virtanen2020scipy}, and PyTorch~\cite{paszke2019pytorch}.
 
-\subsection{Fourier Series and Discontinuities}
+\subsection{Models}
 
-\subsubsection{Discrete Fourier Transform}
-The Discrete Fourier Transform is used when the domain for $f$ consists of linearly spaced, discretized values. The Fast Fourier Transform (FFT) and its inverse (IFFT) are efficient algorithms that reduce the computational complexity from $O(n^2)$ to $O(n\log n)$ and are utilized for our purposes~\cite{osgood}.
+Table~\ref{tab:models} gives the three models. Models A and B share a feed-forward architecture with hidden widths 256, 128, and 64, batch normalization, ReLU activations, and dropout. Model C processes the jump feature vector in a 32-unit branch before concatenating it with Fourier features; the resulting vector is passed through the same 256-128-64 classification stack. All models use cross-entropy loss, Adam optimization, a learning-rate scheduler, and validation-loss early stopping. The checkpoint with the lowest validation loss is restored before testing.
 
-\subsubsection{Accuracy of Fourier Approximations}
-\label{subsec:accuracy}
+\begin{table}[H]
+\caption{Representations evaluated in the reproducible pilot protocol.}
+\label{tab:models}
+\centering
+\begin{tabular}{lll}
+\toprule
+Model & Input representation & Dimension at $N=50$ \\
+\midrule
+A & Raw signal samples & 1500 \\
+B & Real and imaginary Fourier coefficients & 100 \\
+C & Fourier coefficients plus up to four inferred jump pairs & 108 \\
+\bottomrule
+\end{tabular}
+\end{table}
 
-The accuracy of Fourier approximations depends on the smoothness of the function being approximated. For smooth functions, Fourier series converge rapidly, while for functions with discontinuities, the convergence is slower and exhibits the Gibbs phenomenon near jump discontinuities.
+\subsection{Pilot Validation Protocol}
 
-\begin{figure}[htbp]
-	\centering
-	\includegraphics[width=0.8\textwidth]{../results/figures/fig_fourier_approx_N5.png}
-	\caption{Low-frequency Fourier approximation (N = 5 modes): Note the poor approximation of discontinuities in the box and sawtooth signals.}
-	\label{fig:fourierLow}
-\end{figure}
+The completed smoke experiment uses three independent seeds ($11$, $23$, and $37$), 80 examples per class, 12 training epochs, batch size 32, and $N=50$ Fourier modes. This small run was designed to test reproducibility plumbing, not to estimate final benchmark performance. For each seed, all models are trained independently and evaluated on the held-out test partition generated with the same seed. We report the mean, sample standard deviation, and a normal-approximation 95\% confidence interval across the three seeds. Two-sided paired Wilcoxon tests are reported descriptively; with only three seeds they are severely underpowered and must not be treated as confirmatory inference.
 
-\begin{figure}[htbp]
-	\centering
-	\includegraphics[width=0.8\textwidth]{../results/figures/fig_fourier_approx_N50.png}
-	\caption{High-frequency Fourier approximation (N = 50 modes): Further improved approximation with reduced Gibbs phenomenon.}
-	\label{fig:fourierHigh}
-\end{figure}
+\section{Pilot Results}
 
-\subsubsection{Obtaining Jump Data from Fourier Coefficients}
-\label{subsec:jumpData}
+Table~\ref{tab:pilot} reports the complete smoke-validation result. Raw samples and Fourier features had identical mean accuracy. The jump-augmented model had a lower mean accuracy, and no paired comparison yielded statistical evidence at conventional levels. These values supersede earlier single-run, single-split values previously retained in the project repository.
 
-Jump discontinuities in a function can be detected and quantified from its Fourier coefficients. For a function with jump discontinuities, the Fourier coefficients exhibit a slower decay rate ($|\hat{f}_k| \sim O(1/k)$) compared to smooth functions. 
+\begin{table}[H]
+\caption{Repeated-seed smoke validation. Values are mean test accuracy across three seeds; intervals are normal-approximation 95\% confidence intervals across seeds.}
+\label{tab:pilot}
+\centering
+\begin{tabular}{lccc}
+\toprule
+Model & Mean accuracy & SD & 95\% CI \\
+\midrule
+A: raw samples & 87.92\% & 1.44 pp & [86.28\%, 89.55\%] \\
+B: Fourier coefficients & 87.92\% & 1.91 pp & [85.76\%, 90.08\%] \\
+C: Fourier plus jumps & 80.42\% & 3.82 pp & [76.10\%, 84.74\%] \\
+\bottomrule
+\end{tabular}
+\end{table}
 
-To extract jump information, we use a procedure based on the work of Gelb and Tadmor~\cite{fourierCoef}, which leverages the non-linear enhancement of Fourier coefficients to identify discontinuities. The steps are as follows:
-\begin{enumerate}
-    \item Compute the Fourier coefficients $\hat{f}_k$ of the signal.
-    \item Utilize the Generalized Conjugate Partial Fourier Sum, $S_N^g[f](x) = i \sum_{k=-N}^{N} \hat{f}(k) \text{sgn}(k) \sigma(\frac{|k|}{N}) e^{ikx}$, where $\sigma$ are known as concentration factors. Under these conditions, the concentration property $S_N^g[f](x) = [f](x) + O(\epsilon)$ holds, meaning the sum converges to the jump function at points of discontinuity.
-    \item Extract both the locations and magnitudes of the jumps from the output of the concentration method. For the neural network input, the variable-length jump data is padded with zeros to a fixed maximum length.
-\end{enumerate}
-
-\begin{figure}[htbp]
-	\centering
-	\includegraphics[width=0.9\textwidth]{../results/figures/fig7_edge_detection.png}
-	\caption{Edge Detection using Concentration Factors: This figure illustrates the relationship between different signal types and the edge function computed using trigonometric, polynomial, and exponential concentration factors.}
-	\label{fig:edge_detection}
-\end{figure}
-
-\section{Results}
-\subsection{Signal Classification}
-\label{sec:sig_Class}
-
-We generated a dataset of five distinct signal types: sine, box, sawtooth, exponential, and Gaussian. Each signal was sampled at 1500 equally spaced points in the interval $[-\pi, \pi]$. The dataset was split into 70\% training, 10\% validation, and 20\% testing.
-
-We trained three different neural network models:
-\begin{itemize}
-    \item \textbf{Model A}: Using raw signal data (1500 pixel values per signal).
-    \item \textbf{Model B}: Using Fourier coefficients without jump information.
-    \item \textbf{Model C}: Using Fourier coefficients with explicit jump information.
-\end{itemize}
-
-\subsection{Testing}
-\label{subsec:testing}
-
-\subsubsection{Model A}
-Model A, trained on raw signal data, achieved an accuracy of 93.0\% on the clean test dataset. The model performed well on smooth signals but had difficulty distinguishing between signals with sharp transitions when noise was present.
-
-\begin{figure}[htbp]
-	\centering
-	\includegraphics[width=0.8\textwidth]{../results/figures/fig_modelA_train.png}
-	\caption{Model A training performance.}
-	\label{fig:modelA1}
-\end{figure}
-
-\subsubsection{Model B}
-Model B, trained on Fourier coefficients without jump information, achieved an accuracy of 93.2\% on the test dataset (with N=50 modes). Performance improves with more modes up to approximately N=50, after which diminishing returns are observed.
-
-\begin{figure}[htbp]
-	\centering
-	\includegraphics[width=0.8\textwidth]{../results/figures/fig_modelB_train.png}
-	\caption{Model B training performance (N=50).}
-	\label{fig:modelB1}
-\end{figure}
-
-\subsubsection{Model C}
-Model C, trained on Fourier coefficients with explicit jump information, achieved an accuracy of 93.6\% on the test dataset (with N=50 modes). This model outperformed both Models A and B, particularly for signals with discontinuities.
-
-\begin{figure}[htbp]
-	\centering
-	\includegraphics[width=0.8\textwidth]{../results/figures/fig_modelC_train.png}
-	\caption{Model C training performance (N=50).}
-	\label{fig:modelC1}
-\end{figure}
-
-\begin{figure}[htbp]
-	\centering
-	\includegraphics[width=0.8\textwidth]{../results/figures/fig_acc_vs_modes.png}
-	\caption{Testing performance with varying numbers of Fourier modes: The graph shows classification accuracy as a function of the number of Fourier modes (N) used.}
-	\label{fig:acc_vs_modes}
-\end{figure}
+The mean paired differences were $-7.50$ percentage points for C versus A, $-7.50$ percentage points for C versus B, and approximately zero for B versus A. The corresponding two-sided Wilcoxon p-values were 0.25, 0.25, and 1.00, respectively. These figures are included for transparency; a three-seed experiment cannot support a reliable null or alternative conclusion.
 
 \section{Discussion}
 
-Our experimental results demonstrate that Fourier series coefficients can effectively replace grid-point data for neural network-based signal classification. Furthermore, the inclusion of jump information improves classification performance.
+The pilot does not reproduce an apparent advantage for inferred jump features reported by earlier one-off experiments. This mismatch is scientifically important. It may arise from small-sample noise, changes in the split and early-stopping implementation, insufficient training of Model C, a suboptimal peak-extraction design, or the fact that the raw/Fourier representation already contains the relevant discriminative information for these synthetic classes. The current evidence does not distinguish these explanations.
 
-The performance of Model C (93.6\% accuracy) compared to Models A (93.0\%) and B (93.2\%) confirms our hypothesis that jump data contains critical information for signal classification. This finding aligns with the mathematical theory that discontinuities in signals are encoded in the asymptotic behavior of Fourier coefficients. The improvement from Model A to Model B suggests that the frequency domain representation itself provides advantages over the time domain representation, likely due to its ability to capture essential features with fewer dimensions. 
+The absence of a demonstrated pilot benefit does not invalidate concentration-factor theory. Equation~\eqref{eq:concentration} concerns the extraction of discontinuity information from spectral data under mathematical assumptions; it does not imply that a particular neural-network architecture will improve classification accuracy after zero padding, peak selection, and finite-sample optimization. This distinction should guide any later performance claim.
 
-These findings have implications for signal processing applications where computational efficiency is important, as Fourier coefficients often provide a more compact representation than raw signal data.
+The comparison is also narrow relative to modern time-series classification. Strong external baselines include InceptionTime~\cite{fawaz2020inceptiontime} and ROCKET~\cite{dempster2020rocket}, and the broader literature evaluates on standardized collections such as the UCR/UEA archive~\cite{bagnall2017bakeoff,fawaz2019review}. A publication-quality study must add these comparisons or clearly restrict its claim to an educational synthetic benchmark. Fourier-based neural approaches, including Fourier neural operators, show that spectral parameterizations remain an active design space, but they address a different function-learning setting and are not a substitute for direct classification baselines~\cite{li2021fno}.
+
+\section{Confirmatory Evaluation Plan}
+
+Before external submission, the following preregistered protocol must be completed and its raw outputs incorporated into the manuscript:
+\begin{enumerate}
+    \item Run at least ten independent seeds with at least 1000 examples per class on the specified synthetic generator, including clean and prespecified noise conditions.
+    \item Select all hyperparameters using validation data only and report the full search space, selection rule, and compute environment.
+    \item Compare Models A--C against at least a one-dimensional CNN or InceptionTime-style baseline and a ROCKET/MiniROCKET-style baseline under matched splits.
+    \item Conduct a concentration-factor ablation (trigonometric, polynomial, and exponential) and a jump-feature ablation (locations only, magnitudes only, both, and no jump descriptors).
+    \item Evaluate at least one public real or standard benchmark dataset. Claims must be limited to the domains actually evaluated.
+    \item Report per-seed results, mean $\pm$ standard deviation, confidence intervals, effect sizes, paired tests, class-wise metrics, confusion matrices, runtime, and parameter counts.
+\end{enumerate}
 
 \section{Conclusions}
 
-This study investigated whether Fourier series coefficients can effectively replace grid-point data for neural network-based signal classification, and whether incorporating jump information improves classification performance. Our results provide strong evidence supporting both hypotheses.
+The supplied codebase provides a reproducible framework for testing Fourier and concentration-factor representations in signal classification. The completed pilot establishes implementation reproducibility and demonstrates that its prior single-run conclusion was not robust. It does not establish a performance advantage for jump descriptors or a general signal-classification method. The confirmatory plan is therefore a prerequisite for submission, rather than an optional extension.
 
-The key findings of this research are:
-\begin{enumerate}
-    \item Fourier series coefficients can effectively replace grid-point data for signal classification, achieving comparable or better accuracy while reducing dimensionality.
-    \item The inclusion of jump information enhances classification performance, with Model C achieving the highest accuracy.
-    \item The number of Fourier modes used in the representation affects classification performance, with diminishing returns observed beyond approximately 50 modes for our dataset.
-\end{enumerate}
+\section*{Supplementary Materials}
+The source code, interactive notebooks, raw pilot outputs, unit-test results, generated figures, analysis logs, and the planned full Google Colab experiment are available at \url{https://github.com/abbass12/FourierSeriesClassification}. The repository version associated with this manuscript is 2.1.0-preprint.
 
-These findings suggest that the mathematical properties of Fourier series can be leveraged in machine learning contexts to extract meaningful features that might otherwise be overlooked. 
+\authorcontributions{Conceptualization, A.S.; methodology, A.S.; software, A.S.; validation, A.S.; formal analysis, A.S.; writing---original draft preparation, A.S.; writing---review and editing, A.S. The author must review and revise this statement to reflect final authorship and contributions before submission.}
 
+\funding{No external funding has been declared. The author must verify this statement before submission.}
+
+\dataavailability{All synthetic-data generation code, model code, experimental configurations, pilot outputs, and unit-test results are available in the repository listed in the Supplementary Materials section. No human-subject data were used.}
+
+\acknowledgments{The author acknowledges the foundational work of Anne Gelb and Eitan Tadmor on concentration-factor edge detection. Any individual acknowledgments or institutional support must be verified by the author before submission.}
+
+\conflictsofinterest{The author declares no conflict of interest. This statement must be verified by the author before submission.}
+
+\reftitle{References}
 \bibliographystyle{mdpi}
 \bibliography{references}
 

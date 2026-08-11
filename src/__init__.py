@@ -22,7 +22,7 @@ from .fourier import (
 )
 
 from .models import (
-    SignalClassifier, SignalClassifierWithJumps,
+    SignalClassifier, Conv1DSignalClassifier, SignalClassifierWithJumps,
     train_model, evaluate_model,
     prepare_dataloader, prepare_dataloader_with_jumps,
 )

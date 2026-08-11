@@ -1,0 +1,57 @@
+{
+  "configuration": {
+    "seeds": [
+      11,
+      23,
+      37
+    ],
+    "n_samples_per_type": 80,
+    "n_points": 1500,
+    "n_modes": 50,
+    "snr_db": null,
+    "epochs": 12,
+    "batch_size": 32,
+    "device": "cpu"
+  },
+  "summary": {
+    "A_raw": {
+      "n_runs": 3,
+      "mean_accuracy": 0.8208333333333333,
+      "sd_accuracy": 0.05051814855409224,
+      "ci95_lower": 0.7636666666666666,
+      "ci95_upper": 0.878
+    },
+    "B_fourier": {
+      "n_runs": 3,
+      "mean_accuracy": 0.8583333333333334,
+      "sd_accuracy": 0.0616610357789531,
+      "ci95_lower": 0.7885573027465735,
+      "ci95_upper": 0.9281093639200932
+    },
+    "C_fourier_jumps": {
+      "n_runs": 3,
+      "mean_accuracy": 0.8041666666666667,
+      "sd_accuracy": 0.052041649986653366,
+      "ci95_lower": 0.7452759958340881,
+      "ci95_upper": 0.8630573374992453
+    }
+  },
+  "paired_tests": {
+    "C_vs_A": {
+      "mean_accuracy_difference": -0.01666666666666668,
+      "wilcoxon_statistic": 1.5,
+      "two_sided_p_value": 0.75
+    },
+    "C_vs_B": {
+      "mean_accuracy_difference": -0.05416666666666666,
+      "wilcoxon_statistic": 0.0,
+      "two_sided_p_value": 0.5
+    },
+    "B_vs_A": {
+      "mean_accuracy_difference": 0.03749999999999998,
+      "wilcoxon_statistic": 0.0,
+      "two_sided_p_value": 0.25
+    }
+  },
+  "interpretation": "These results characterize only the specified synthetic generator and protocol. They do not establish generalization to real-world signal-classification tasks."
+}
