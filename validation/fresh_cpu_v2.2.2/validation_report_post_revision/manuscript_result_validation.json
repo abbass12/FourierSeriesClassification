@@ -1,0 +1,144 @@
+{
+  "protocol_version": "2.2.2",
+  "checks": [
+    {
+      "status": "pass",
+      "kind": "synthetic_smoke",
+      "summary_path": "validation/fresh_cpu_v2.2.2/repeated_seed_smoke_v2/validation_summary.json",
+      "csv_path": "validation/fresh_cpu_v2.2.2/repeated_seed_smoke_v2/per_seed_accuracy.csv",
+      "summary_sha256": "f6c870d506c7002e65c5888627d6232997a0514044b8b9b3f31e3c76cac56be2",
+      "csv_sha256": "f44e21d8bad0af60a7a20470bba80effae32fdf457031f522be8a5cba2536146",
+      "observed": {
+        "A_raw": {
+          "mean_accuracy": 0.8791666666666668,
+          "sd_accuracy": 0.014433756729740593
+        },
+        "B_fourier": {
+          "mean_accuracy": 0.8791666666666668,
+          "sd_accuracy": 0.019094065395649326
+        },
+        "C_fourier_jumps": {
+          "mean_accuracy": 0.8041666666666667,
+          "sd_accuracy": 0.0381881307912987
+        }
+      }
+    },
+    {
+      "status": "pass",
+      "kind": "ecg200_screening",
+      "summary_path": "validation/fresh_cpu_v2.2.2/ECG200_screening/ECG200_summary.json",
+      "csv_path": "validation/fresh_cpu_v2.2.2/ECG200_screening/ECG200_per_seed_metrics.csv",
+      "summary_sha256": "d78f615d71f3b0334f15225d0a6772874da7b9c6d5ba8a6b104c90a776e38a41",
+      "csv_sha256": "0ef236d4e5226c158acbf9e2fe47cbfab2e19a545ebb634695f281135d925e82",
+      "observed": {
+        "A_raw_mlp": {
+          "accuracy_mean": 0.8933333333333334,
+          "accuracy_sd": 0.005773502691896263,
+          "macro_f1_mean": 0.8821888355884381,
+          "macro_f1_sd": 0.007060480517677943
+        },
+        "B_fourier_mlp": {
+          "accuracy_mean": 0.9166666666666666,
+          "accuracy_sd": 0.011547005383792525,
+          "macro_f1_mean": 0.9085799678144957,
+          "macro_f1_sd": 0.013000237415108628
+        },
+        "C_fourier_jumps": {
+          "accuracy_mean": 0.79,
+          "accuracy_sd": 0.062449979983983994,
+          "macro_f1_mean": 0.7426227428906275,
+          "macro_f1_sd": 0.11026198288424349
+        },
+        "D_cnn": {
+          "accuracy_mean": 0.85,
+          "accuracy_sd": 0.026457513110645932,
+          "macro_f1_mean": 0.8330425165460261,
+          "macro_f1_sd": 0.03774925672239259
+        }
+      }
+    },
+    {
+      "status": "pass",
+      "kind": "ecg200_jump_location_ablation",
+      "summary_path": "validation/fresh_cpu_v2.2.2/ECG200_locations/ECG200_summary.json",
+      "csv_path": "validation/fresh_cpu_v2.2.2/ECG200_locations/ECG200_per_seed_metrics.csv",
+      "summary_sha256": "0a2df074d88374adcff39fba276912eda81941cbf73797a6f4a837c697fe3a20",
+      "csv_sha256": "ade943b038fb8e3f76c76c90cbbb086c1a4d00f9a56283f867e01ba6e7248d36",
+      "observed": {
+        "C_fourier_jumps": {
+          "accuracy_mean": 0.8433333333333334,
+          "accuracy_sd": 0.03785938897200179,
+          "macro_f1_mean": 0.8284395793678486,
+          "macro_f1_sd": 0.03968171066477621
+        }
+      }
+    },
+    {
+      "status": "pass",
+      "kind": "ecg200_jump_magnitude_ablation",
+      "summary_path": "validation/fresh_cpu_v2.2.2/ECG200_magnitudes/ECG200_summary.json",
+      "csv_path": "validation/fresh_cpu_v2.2.2/ECG200_magnitudes/ECG200_per_seed_metrics.csv",
+      "summary_sha256": "4f414d8ca94c213aad6e33fa218fb9370ac820b86a343f03d8412577f3c3951e",
+      "csv_sha256": "a3a938a7572b09c089ead0403be2eacc8fd23664113d8c463fcb5e10da9b861a",
+      "observed": {
+        "C_fourier_jumps": {
+          "accuracy_mean": 0.8333333333333334,
+          "accuracy_sd": 0.005773502691896263,
+          "macro_f1_mean": 0.8174465484189231,
+          "macro_f1_sd": 0.005022793931765169
+        }
+      }
+    },
+    {
+      "status": "pass",
+      "kind": "ecg200_sigma_polynomial_ablation",
+      "summary_path": "validation/fresh_cpu_v2.2.2/ECG200_poly/ECG200_summary.json",
+      "csv_path": "validation/fresh_cpu_v2.2.2/ECG200_poly/ECG200_per_seed_metrics.csv",
+      "summary_sha256": "0a0ac62820b64c86c3f61d97654cda27da12b55a467800a83ac743497f9dd82a",
+      "csv_sha256": "5edd3b41ba711282dc91e73742b9f0f4e135eebd727f455d0c0464afdf1d5aaf",
+      "observed": {
+        "C_fourier_jumps": {
+          "accuracy_mean": 0.79,
+          "accuracy_sd": 0.017320508075688787,
+          "macro_f1_mean": 0.7621039767421346,
+          "macro_f1_sd": 0.038366415331337674
+        }
+      }
+    },
+    {
+      "status": "pass",
+      "kind": "ecg200_sigma_exponential_ablation",
+      "summary_path": "validation/fresh_cpu_v2.2.2/ECG200_exp/ECG200_summary.json",
+      "csv_path": "validation/fresh_cpu_v2.2.2/ECG200_exp/ECG200_per_seed_metrics.csv",
+      "summary_sha256": "0632432cb8b5514c2e2c6e2e45c9cf47690dd544025e8eaf6ea322539d4fd2b8",
+      "csv_sha256": "d8974ae7ed7c184d55a1664e7f30aba9ee8feb38f798c9881b86251a5dde3cc6",
+      "observed": {
+        "C_fourier_jumps": {
+          "accuracy_mean": 0.85,
+          "accuracy_sd": 0.0,
+          "macro_f1_mean": 0.8399892694253491,
+          "macro_f1_sd": 0.004904405366163297
+        }
+      }
+    },
+    {
+      "status": "pass",
+      "kind": "manuscript_displayed_values",
+      "paper_path": "paper/main.tex",
+      "paper_sha256": "2108e858cfe09080e941d16bb6cf5e90cf8b5dc3ea84548eb0aec7b17c0e2b95",
+      "checked_tokens": [
+        "87.92\\%",
+        "80.42\\%",
+        "89.33\\%",
+        "91.67\\%",
+        "79.00\\%",
+        "85.00\\%",
+        "84.33\\%",
+        "83.33\\%",
+        "Trigonometric",
+        "Polynomial",
+        "Exponential"
+      ]
+    }
+  ]
+}

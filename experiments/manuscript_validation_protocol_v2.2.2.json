@@ -1,0 +1,72 @@
+{
+  "protocol_version": "2.2.2",
+  "purpose": "Regenerate and validate every empirical table currently reported in paper/main.tex.",
+  "global_policy": {
+    "seeds": [11, 23, 37],
+    "statistical_scope": "Three-seed results are descriptive screens, not confirmatory inference.",
+    "validation_requirements": [
+      "fresh runner output",
+      "per-seed CSV and JSON summary",
+      "summary recomputation from CSV",
+      "comparison to manuscript value at displayed precision",
+      "provenance manifest"
+    ]
+  },
+  "synthetic_smoke": {
+    "runner": "run_repeated_validation.py",
+    "arguments": [
+      "--seeds", "11", "23", "37",
+      "--samples-per-type", "80",
+      "--points", "1500",
+      "--modes", "50",
+      "--epochs", "12",
+      "--batch-size", "32"
+    ],
+    "expected_summary": {
+      "A_raw": {"mean_accuracy": 0.8791666666666668, "sd_accuracy": 0.014433756729740593},
+      "B_fourier": {"mean_accuracy": 0.8791666666666668, "sd_accuracy": 0.019094065395649326},
+      "C_fourier_jumps": {"mean_accuracy": 0.8041666666666667, "sd_accuracy": 0.0381881307912987}
+    },
+    "expected_paired_p_values": {"C_vs_A": 0.25, "C_vs_B": 0.25, "B_vs_A": 1.0}
+  },
+  "ecg200_screening": {
+    "runner": "run_ucr_benchmark.py",
+    "arguments": [
+      "--dataset", "ECG200",
+      "--seeds", "11", "23", "37",
+      "--validation-ratio", "0.2",
+      "--modes", "32",
+      "--max-jumps", "4",
+      "--sigma-type", "trig",
+      "--jump-feature-mode", "both",
+      "--epochs", "50",
+      "--batch-size", "16"
+    ],
+    "expected_summary": {
+      "A_raw_mlp": {"accuracy_mean": 0.8933333333333334, "accuracy_sd": 0.005773502691896263, "macro_f1_mean": 0.8821888355884381, "macro_f1_sd": 0.007060480517677943},
+      "B_fourier_mlp": {"accuracy_mean": 0.9166666666666666, "accuracy_sd": 0.011547005383792525, "macro_f1_mean": 0.9085799678144957, "macro_f1_sd": 0.013000237415108628},
+      "C_fourier_jumps": {"accuracy_mean": 0.79, "accuracy_sd": 0.062449979983983994, "macro_f1_mean": 0.7426227428906275, "macro_f1_sd": 0.11026198288424349},
+      "D_cnn": {"accuracy_mean": 0.85, "accuracy_sd": 0.026457513110645932, "macro_f1_mean": 0.8330425165460261, "macro_f1_sd": 0.03774925672239259}
+    }
+  },
+  "ecg200_jump_location_ablation": {
+    "base": "ecg200_screening",
+    "overrides": ["--jump-feature-mode", "locations"],
+    "expected": {"C_fourier_jumps": {"accuracy_mean": 0.8433333333333334, "accuracy_sd": 0.03785938897200179, "macro_f1_mean": 0.8284395793678486, "macro_f1_sd": 0.03968171066477621}}
+  },
+  "ecg200_jump_magnitude_ablation": {
+    "base": "ecg200_screening",
+    "overrides": ["--jump-feature-mode", "magnitudes"],
+    "expected": {"C_fourier_jumps": {"accuracy_mean": 0.8333333333333334, "accuracy_sd": 0.005773502691896263, "macro_f1_mean": 0.8174465484189231, "macro_f1_sd": 0.005022793931765169}}
+  },
+  "ecg200_sigma_polynomial_ablation": {
+    "base": "ecg200_screening",
+    "overrides": ["--sigma-type", "poly"],
+    "expected": {"C_fourier_jumps": {"accuracy_mean": 0.79, "accuracy_sd": 0.017320508075688787, "macro_f1_mean": 0.7621039767421346, "macro_f1_sd": 0.038366415331337674}}
+  },
+  "ecg200_sigma_exponential_ablation": {
+    "base": "ecg200_screening",
+    "overrides": ["--sigma-type", "exp"],
+    "expected": {"C_fourier_jumps": {"accuracy_mean": 0.85, "accuracy_sd": 0.0, "macro_f1_mean": 0.8399892694253491, "macro_f1_sd": 0.004904405366163297}}
+  }
+}

@@ -1,0 +1,81 @@
+{
+  "configuration": {
+    "seeds": [
+      11,
+      23,
+      37
+    ],
+    "n_samples_per_type": 80,
+    "n_points": 1500,
+    "n_modes": 50,
+    "snr_db": null,
+    "epochs": 12,
+    "batch_size": 32,
+    "sigma_type": "trig",
+    "jump_feature_mode": "both",
+    "device": "cpu"
+  },
+  "summary": {
+    "A_raw": {
+      "n_runs": 3,
+      "mean_accuracy": 0.8791666666666668,
+      "sd_accuracy": 0.014433756729740593,
+      "ci95_lower": 0.8628333333333335,
+      "ci95_upper": 0.8955000000000001
+    },
+    "B_fourier": {
+      "n_runs": 3,
+      "mean_accuracy": 0.8791666666666668,
+      "sd_accuracy": 0.019094065395649326,
+      "ci95_lower": 0.8575596976263059,
+      "ci95_upper": 0.9007736357070276
+    },
+    "C_fourier_jumps": {
+      "n_runs": 3,
+      "mean_accuracy": 0.8041666666666667,
+      "sd_accuracy": 0.0381881307912987,
+      "ci95_lower": 0.760952728585945,
+      "ci95_upper": 0.8473806047473884
+    },
+    "D_cnn": {
+      "n_runs": 3,
+      "mean_accuracy": 0.6708333333333334,
+      "sd_accuracy": 0.11203608049790628,
+      "ci95_lower": 0.5440525733138766,
+      "ci95_upper": 0.7976140933527902
+    }
+  },
+  "paired_tests": {
+    "C_vs_A": {
+      "mean_accuracy_difference": -0.075,
+      "wilcoxon_statistic": 0.0,
+      "two_sided_p_value": 0.25
+    },
+    "C_vs_B": {
+      "mean_accuracy_difference": -0.07500000000000002,
+      "wilcoxon_statistic": 0.0,
+      "two_sided_p_value": 0.25
+    },
+    "C_vs_D": {
+      "mean_accuracy_difference": 0.1333333333333333,
+      "wilcoxon_statistic": 0.0,
+      "two_sided_p_value": 0.25
+    },
+    "B_vs_A": {
+      "mean_accuracy_difference": 3.700743415417188e-17,
+      "wilcoxon_statistic": 3.0,
+      "two_sided_p_value": 1.0
+    },
+    "B_vs_D": {
+      "mean_accuracy_difference": 0.20833333333333334,
+      "wilcoxon_statistic": 0.0,
+      "two_sided_p_value": 0.25
+    },
+    "A_vs_D": {
+      "mean_accuracy_difference": 0.2083333333333333,
+      "wilcoxon_statistic": 0.0,
+      "two_sided_p_value": 0.25
+    }
+  },
+  "interpretation": "These results characterize only the specified synthetic generator and protocol. They do not establish generalization to real-world signal-classification tasks."
+}

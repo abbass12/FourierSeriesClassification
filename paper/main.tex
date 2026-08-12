@@ -91,7 +91,7 @@ C & Fourier coefficients plus up to four inferred jump pairs & 108 \\
 
 \subsection{Pilot Validation Protocol}
 
-The completed smoke experiment uses three independent seeds ($11$, $23$, and $37$), 80 examples per class, 12 training epochs, batch size 32, and $N=50$ Fourier modes. This small run was designed to test reproducibility plumbing, not to estimate final benchmark performance. For each seed, all models are trained independently and evaluated on the held-out test partition generated with the same seed. We report the mean, sample standard deviation, and a normal-approximation 95\% confidence interval across the three seeds. Two-sided paired Wilcoxon tests are reported descriptively; with only three seeds they are severely underpowered and must not be treated as confirmatory inference.
+The completed smoke experiment uses three independent seeds ($11$, $23$, and $37$), 80 examples per class, 12 training epochs, batch size 32, and $N=50$ Fourier modes. This small run was designed to test reproducibility plumbing, not to estimate final benchmark performance. For release 2.2.2, the complete protocol was freshly regenerated from the frozen configuration and independently checked by recomputing every summary statistic from the emitted per-seed records. For each seed, all models are trained independently and evaluated on the held-out test partition generated with the same seed. We report the mean, sample standard deviation, and a normal-approximation 95\% confidence interval across the three seeds. Two-sided paired Wilcoxon tests are reported descriptively; with only three seeds they are severely underpowered and must not be treated as confirmatory inference.
 
 \subsection{Public-Benchmark Screening Protocol}
 
@@ -101,7 +101,7 @@ As an initial external-data check, we evaluated the same representations on ECG2
 
 \subsection{Synthetic Smoke Validation}
 
-Table~\ref{tab:pilot} reports the complete synthetic smoke-validation result. Raw samples and Fourier features had identical mean accuracy. The jump-augmented model had a lower mean accuracy, and no paired comparison yielded statistical evidence at conventional levels. These values supersede earlier single-run, single-split values previously retained in the project repository.
+Table~\ref{tab:pilot} reports the complete synthetic smoke-validation result. The displayed values are from the clean release-2.2.2 regeneration and agree with the corresponding per-seed CSV and JSON artifacts. Raw samples and Fourier features had identical mean accuracy. The jump-augmented model had a lower mean accuracy, and no paired comparison yielded statistical evidence at conventional levels. These values supersede earlier single-run, single-split values previously retained in the project repository.
 
 \begin{table}[H]
 \caption{Repeated-seed smoke validation. Values are mean test accuracy across three seeds; intervals are normal-approximation 95\% confidence intervals across seeds.}
@@ -122,7 +122,7 @@ The mean paired differences were $-7.50$ percentage points for C versus A, $-7.5
 
 \subsection{ECG200 Screening}
 
-Table~\ref{tab:ecg200} presents the separate public-benchmark screening. The Fourier MLP had the highest mean accuracy and macro F1, while the Fourier-plus-jump model had the lowest mean results and the greatest between-seed variability. Its mean accuracy differences versus the raw MLP, Fourier MLP, and compact CNN were $-10.33$, $-12.67$, and $-6.00$ percentage points, respectively. Each three-seed Wilcoxon comparison had a two-sided p-value of 0.25 and is therefore descriptive only.
+Table~\ref{tab:ecg200} presents the separate public-benchmark screening. The table was freshly regenerated under the frozen release-2.2.2 protocol and its summary statistics were recomputed from the per-seed records. The Fourier MLP had the highest mean accuracy and macro F1, while the Fourier-plus-jump model had the lowest mean results and the greatest between-seed variability. Its mean accuracy differences versus the raw MLP, Fourier MLP, and compact CNN were $-10.33$, $-12.67$, and $-6.00$ percentage points, respectively. Each three-seed Wilcoxon comparison had a two-sided p-value of 0.25 and is therefore descriptive only.
 
 \begin{table}[H]
 \caption{ECG200 fixed-split screening over three training seeds. The official test partition was held fixed; mean and sample SD summarize training/validation-split and initialization variation.}
@@ -142,7 +142,7 @@ Compact 1D CNN & 85.00\% & 2.65 pp & 83.30\% & 3.77 pp \\
 
 \subsection{Jump-Descriptor Ablation on ECG200}
 
-Table~\ref{tab:jumpablation} separates the location and magnitude components of the inferred jump representation. The Fourier-only MLP is the no-jump condition. In this three-seed screening, all inferred-descriptor variants were lower in mean accuracy and macro F1 than the Fourier-only model. The location-only descriptor was less unfavorable than magnitudes-only or the combined descriptor, but the design is not sufficient to establish comparative significance or a general rule.
+Table~\ref{tab:jumpablation} separates the location and magnitude components of the inferred jump representation. Each condition was regenerated independently in release 2.2.2 and checked against its per-seed metrics. The Fourier-only MLP is the no-jump condition. In this three-seed screening, all inferred-descriptor variants were lower in mean accuracy and macro F1 than the Fourier-only model. The location-only descriptor was less unfavorable than magnitudes-only or the combined descriptor, but the design is not sufficient to establish comparative significance or a general rule.
 
 \begin{table}[H]
 \caption{ECG200 jump-descriptor ablation. All conditions use 32 Fourier modes, a trigonometric concentration factor, and at most four retained peaks.}
@@ -162,7 +162,7 @@ Inferred locations and magnitudes & 79.00\% & 6.24 pp & 74.26\% & 11.03 pp \\
 
 \subsection{Concentration-Factor Screening Ablation on ECG200}
 
-Table~\ref{tab:sigmaablation} varies the concentration factor while retaining the combined location-and-magnitude descriptor. The exponential choice was the least unfavorable descriptor condition in this screening, but every concentration-factor variant was lower in mean accuracy and macro F1 than the Fourier-only MLP. The result is an initial software and protocol ablation, not a definitive comparison across spectral configurations.
+Table~\ref{tab:sigmaablation} varies the concentration factor while retaining the combined location-and-magnitude descriptor. Each condition was regenerated independently in release 2.2.2 and checked against its per-seed metrics. The exponential choice was the least unfavorable descriptor condition in this screening, but every concentration-factor variant was lower in mean accuracy and macro F1 than the Fourier-only MLP. The result is an initial software and protocol ablation, not a definitive comparison across spectral configurations.
 
 \begin{table}[H]
 \caption{ECG200 concentration-factor screening ablation for combined inferred jump descriptors.}
@@ -205,7 +205,7 @@ Before external submission, the following preregistered protocol must be complet
 The supplied codebase provides a reproducible framework for testing Fourier and concentration-factor representations in signal classification. The completed synthetic and ECG200 screening studies establish implementation reproducibility and demonstrate that the prior single-run conclusion was not robust. It does not establish a performance advantage for jump descriptors or a general signal-classification method. The confirmatory plan is therefore a prerequisite for submission, rather than an optional extension.
 
 \section*{Supplementary Materials}
-The source code, interactive notebooks, raw pilot outputs, unit-test results, generated figures, analysis logs, and the planned full Google Colab experiment are available at \url{https://github.com/abbass12/FourierSeriesClassification}. The repository version associated with this manuscript is 2.1.3-preprint.
+The source code, interactive notebooks, raw pilot outputs, unit-test results, generated figures, analysis logs, and the planned full Google Colab experiment are available at \url{https://github.com/abbass12/FourierSeriesClassification}. The repository version associated with this manuscript is 2.2.2-validation. The frozen protocol is \texttt{experiments/manuscript\_validation\_protocol\_v2.2.2.json}; clean rerun outputs, the validator report, command manifest, and SHA-256 checksums are stored under \texttt{validation/fresh\_cpu\_v2.2.2/}; and the concise validation record is \texttt{test\_results/manuscript\_validation\_v2.2.2.md}.
 
 \authorcontributions{Conceptualization, A.S.; methodology, A.S.; software, A.S.; validation, A.S.; formal analysis, A.S.; writing---original draft preparation, A.S.; writing---review and editing, A.S. The author must review and revise this statement to reflect final authorship and contributions before submission.}
 

@@ -1,0 +1,113 @@
+{
+  "dataset": {
+    "dataset_name": "ECG200",
+    "n_classes": 2,
+    "series_length": 96,
+    "label_mapping": {
+      "-1.0": 0,
+      "1.0": 1
+    },
+    "normalize_per_series": true,
+    "train_file": "/home/ubuntu/fourier-signal-classification/data/ECG200/ECG200_TRAIN.txt",
+    "test_file": "/home/ubuntu/fourier-signal-classification/data/ECG200/ECG200_TEST.txt"
+  },
+  "configuration": {
+    "seeds": [
+      11,
+      23,
+      37
+    ],
+    "validation_ratio": 0.2,
+    "n_modes": 32,
+    "max_jumps": 4,
+    "sigma_type": "trig",
+    "jump_feature_mode": "both",
+    "epochs": 50,
+    "batch_size": 16,
+    "device": "cpu"
+  },
+  "summary": {
+    "A_raw_mlp": {
+      "accuracy": {
+        "n_runs": 3,
+        "mean": 0.8933333333333334,
+        "sd": 0.005773502691896263,
+        "ci95_lower": 0.8868,
+        "ci95_upper": 0.8998666666666668
+      },
+      "macro_f1": {
+        "n_runs": 3,
+        "mean": 0.8821888355884381,
+        "sd": 0.007060480517677943,
+        "ci95_lower": 0.8741991497465588,
+        "ci95_upper": 0.8901785214303174
+      }
+    },
+    "B_fourier_mlp": {
+      "accuracy": {
+        "n_runs": 3,
+        "mean": 0.9166666666666666,
+        "sd": 0.011547005383792525,
+        "ci95_lower": 0.9036,
+        "ci95_upper": 0.9297333333333333
+      },
+      "macro_f1": {
+        "n_runs": 3,
+        "mean": 0.9085799678144957,
+        "sd": 0.013000237415108628,
+        "ci95_lower": 0.8938688142950574,
+        "ci95_upper": 0.923291121333934
+      }
+    },
+    "C_fourier_jumps": {
+      "accuracy": {
+        "n_runs": 3,
+        "mean": 0.79,
+        "sd": 0.062449979983983994,
+        "ci95_lower": 0.7193311950009058,
+        "ci95_upper": 0.8606688049990943
+      },
+      "macro_f1": {
+        "n_runs": 3,
+        "mean": 0.7426227428906275,
+        "sd": 0.11026198288424349,
+        "ci95_lower": 0.6178495633114117,
+        "ci95_upper": 0.8673959224698432
+      }
+    },
+    "D_cnn": {
+      "accuracy": {
+        "n_runs": 3,
+        "mean": 0.85,
+        "sd": 0.026457513110645932,
+        "ci95_lower": 0.8200605054596218,
+        "ci95_upper": 0.8799394945403781
+      },
+      "macro_f1": {
+        "n_runs": 3,
+        "mean": 0.8330425165460261,
+        "sd": 0.03774925672239259,
+        "ci95_lower": 0.790325211226478,
+        "ci95_upper": 0.8757598218655742
+      }
+    }
+  },
+  "paired_tests": {
+    "C_fourier_jumps_vs_A_raw_mlp": {
+      "mean_accuracy_difference": -0.10333333333333335,
+      "wilcoxon_statistic": 0.0,
+      "two_sided_p_value": 0.25
+    },
+    "C_fourier_jumps_vs_B_fourier_mlp": {
+      "mean_accuracy_difference": -0.1266666666666667,
+      "wilcoxon_statistic": 0.0,
+      "two_sided_p_value": 0.25
+    },
+    "C_fourier_jumps_vs_D_cnn": {
+      "mean_accuracy_difference": -0.05999999999999998,
+      "wilcoxon_statistic": 0.0,
+      "two_sided_p_value": 0.25
+    }
+  },
+  "interpretation": "This result applies only to the named UCR-format dataset and the documented protocol. It must not be generalized to other signal domains without further evidence."
+}
