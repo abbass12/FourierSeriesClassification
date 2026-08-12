@@ -1,0 +1,60 @@
+{
+  "protocol_version": "full_dataset_replication_v1.0.0",
+  "purpose": "Confirm whether the synthetic pilot’s representation ordering replicates on the complete deterministic Fourier-noise dataset.",
+  "source_dataset": {
+    "name": "synthetic_fourier_noise_v1.0.0",
+    "release_commit": "43d4f23",
+    "source_format": "npz shards with split metadata",
+    "families": ["sine", "box", "sawtooth", "exponential", "gaussian"],
+    "noise_conditions_db": ["clean", 30, 20, 10, 0],
+    "signal_points": 1500,
+    "frozen_splits": {
+      "train": 100000,
+      "val": 25000,
+      "test": 25000
+    }
+  },
+  "primary_replication": {
+    "name": "clean_condition_ten_seed_replication",
+    "claim_tested": "On the original clean synthetic setting, Fourier features and inferred jump descriptors reproduce the relative ordering reported in the pilot manuscript.",
+    "noise_condition": "clean",
+    "per_split_samples": {
+      "train": 20000,
+      "val": 5000,
+      "test": 5000
+    },
+    "seeds": [11, 23, 37, 53, 71, 89, 107, 131, 149, 167],
+    "models": ["raw_mlp", "fourier_mlp", "fourier_jump_mlp"],
+    "fourier_modes": 50,
+    "concentration_factor": "trigonometric",
+    "jump_descriptor": "both",
+    "n_peaks": 4,
+    "epochs_max": 80,
+    "batch_size": 256,
+    "optimizer": "Adam",
+    "learning_rate": 0.001,
+    "weight_decay": 0.0001,
+    "early_stopping_patience": 12,
+    "scheduler_patience": 5,
+    "device": "cuda",
+    "metrics": ["accuracy", "macro_f1", "class_accuracy", "confusion_matrix", "runtime_seconds", "parameter_count"],
+    "comparisons": [["fourier_mlp", "raw_mlp"], ["fourier_jump_mlp", "raw_mlp"], ["fourier_jump_mlp", "fourier_mlp"]]
+  },
+  "robustness_extension": {
+    "name": "noise_condition_evaluation",
+    "status": "planned_after_primary_replication",
+    "description": "Evaluate the model selected by the primary protocol separately on the five held-out noise strata without altering the frozen training data or model-selection rule."
+  },
+  "statistical_reporting": {
+    "summary": ["mean", "sample_standard_deviation", "t_interval_95"],
+    "paired_test": "two_sided_wilcoxon_signed_rank",
+    "effect_size": "paired_mean_difference_percentage_points",
+    "replication_rule": "A pilot ordering is treated as replicated only when the complete clean-condition ten-seed result has the same directional ordering and its corresponding paired comparison is documented without post-hoc hyperparameter changes."
+  },
+  "integrity_rules": [
+    "Use only the frozen train, validation, and test files from the complete dataset.",
+    "Do not select hyperparameters using test metrics.",
+    "Retain per-seed records, predictions, confusion matrices, command manifest, environment record, and checksums.",
+    "Treat the paper’s three-seed pilot as historical evidence; do not overwrite it with the confirmatory result."
+  ]
+}
