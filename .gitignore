@@ -9,3 +9,6 @@ build/
 
 # Third-party benchmark data are downloaded locally and not redistributed.
 data/
+
+# Large deterministic dataset artifacts are published separately from Git.
+datasets/synthetic_fourier_noise_v1.0.0/release_artifact/

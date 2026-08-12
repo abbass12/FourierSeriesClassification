@@ -1,6 +1,6 @@
 # Fourier Series Signal Classification
 
-**Version 2.1.3-preprint**
+**Version 2.2.2-validation; Synthetic Fourier Noise Dataset v1.0.0**
 
 [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/abbass12/FourierSeriesClassification/blob/main/notebooks/Confirmatory_Validation_Colab.ipynb)
 [![Launch on Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/abbass12/FourierSeriesClassification/main?labpath=notebooks%2FInteractive_Signal_Demo.ipynb)
@@ -12,6 +12,12 @@ This repository contains a **reproducible pilot study**, not a completed or acce
 An earlier one-off experiment suggested that jump features improved classification accuracy. After correcting the evaluation protocol and running a small repeated-seed smoke test, that improvement did **not** reproduce. The current code and manuscript preserve this negative result transparently. Do not cite the repository as evidence that concentration-factor jump features improve general signal classification.
 
 See [`SUBMISSION_READINESS.md`](SUBMISSION_READINESS.md) for the required work before journal submission.
+
+## Complete Synthetic Fourier Noise Dataset
+
+The repository now includes a versioned generator, validator, and Google Colab workflow for **Synthetic Fourier Noise Dataset v1.0.0**. The completed T4 run created 150,000 labeled 1D signals: 100,000 training, 25,000 validation, and 25,000 testing examples. The five signal families are sine, box, sawtooth, exponential, and Gaussian; each is represented under clean, 30 dB, 20 dB, 10 dB, and 0 dB noise conditions.
+
+The full release passed schema, balance, metadata, checksum, SNR, and sampled-DFT validation. Its complete generation/validation specification is [`datasets/synthetic_fourier_noise_v1.0.0/DATASET_SPEC.md`](datasets/synthetic_fourier_noise_v1.0.0/DATASET_SPEC.md); the release provenance and independent validation record are [`DATASET_RELEASE_v1.0.0.md`](datasets/synthetic_fourier_noise_v1.0.0/DATASET_RELEASE_v1.0.0.md). Use [`Generate_Synthetic_Fourier_Dataset_Colab.ipynb`](notebooks/Generate_Synthetic_Fourier_Dataset_Colab.ipynb) to regenerate the suite on a T4. The large generated arrays are distributed separately rather than committed to Git.
 
 ## Completed Smoke Validation
 
@@ -58,7 +64,14 @@ FourierSeriesClassification/
 │   └── benchmarks.py                 # Local UCR-format dataset loading
 ├── notebooks/
 │   ├── Interactive_Signal_Demo.ipynb
-│   └── Full_Experiment_Colab.ipynb
+│   ├── Full_Experiment_Colab.ipynb
+│   └── Generate_Synthetic_Fourier_Dataset_Colab.ipynb
+├── dataset_generation/
+│   ├── generate_synthetic_fourier_dataset.py
+│   └── validate_synthetic_fourier_dataset.py
+├── datasets/synthetic_fourier_noise_v1.0.0/
+│   ├── DATASET_SPEC.md
+│   └── DATASET_RELEASE_v1.0.0.md
 ├── paper/
 │   ├── main.tex                      # Transparent pre-submission pilot manuscript
 │   └── references.bib                # Audited bibliography
@@ -85,7 +98,7 @@ python -m pip install pytest
 python -m pytest -q tests/test_core.py
 ```
 
-The current suite checks deterministic synthetic-noise generation, Fourier feature dimensionality, finite partial sums, jump-feature output shape, and stratified splitting.
+The current suite checks deterministic synthetic-noise generation, Fourier feature dimensionality, finite partial sums, jump-feature output shape, stratified splitting, and complete-dataset SNR/DFT consistency.
 
 ## Run the Smoke Protocol
 

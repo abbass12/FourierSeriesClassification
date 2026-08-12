@@ -1,0 +1,15 @@
+{
+  "status": "pass",
+  "dataset_version": "synthetic_fourier_noise_v1.0.0",
+  "total_signals": 150000,
+  "n_shards": 75,
+  "metadata_rows": {
+    "train": 100000,
+    "val": 25000,
+    "test": 25000
+  },
+  "checksum_files_verified": 80,
+  "max_absolute_snr_error_db": 1.7630280950697852e-06,
+  "max_absolute_fourier_error": 3.497493139548169e-08,
+  "class_snr_split_balance": "exact"
+}
